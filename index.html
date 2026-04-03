@@ -6,155 +6,236 @@
 <title>Paw Paradise</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+
+<style>
+body {
+  font-family: Arial;
+}
+
+.navbar {
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.card {
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card img {
+  height: 200px;
+  object-fit: cover;
+}
+
+.category-card {
+  cursor: pointer;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+.category-card:hover {
+  background-color: #f8f9fa;
+}
+
+footer {
+  background: #222;
+  color: white;
+}
+</style>
+
 </head>
 
 <body>
 
+<!-- TOP BAR -->
+<div class="bg-warning text-center p-2">
+🚚 Free Delivery on orders over $50
+</div>
+
 <!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container">
-    <a class="navbar-brand fw-bold" href="index.html">🐾 Paw Paradise</a>
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
+<div class="container">
 
-    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menu">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+<a class="navbar-brand fw-bold">🐾 Paw Paradise</a>
 
-    <div class="collapse navbar-collapse" id="menu">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="products.html">Shop</a></li>
-        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
-        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-      </ul>
-    </div>
-  </div>
+<input class="form-control w-50" placeholder="Search products...">
+
+<button class="btn btn-outline-dark">🛒 Cart</button>
+
+</div>
 </nav>
 
-<!-- HERO -->
-<section class="bg-light text-center p-5">
-  <h1 class="fw-bold">Everything Your Pet Needs 🐶🐱</h1>
-  <p>Food, Toys, Care & More</p>
+<!-- CATEGORY BAR -->
+<div class="bg-light text-center p-2">
+🐶 Dog | 🐱 Cat | 🐦 Bird | 🐹 Small Pets
+</div>
 
-  <div class="d-flex justify-content-center mt-3">
-    <input class="form-control w-50 me-2" placeholder="Search products...">
-    <button class="btn btn-warning" onclick="window.location.href='products.html'">Shop Now</button>
-  </div>
+<!-- SLIDER -->
+<div id="carouselExample" class="carousel slide">
+
+<div class="carousel-inner">
+
+<div class="carousel-item active">
+<img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=1200&q=80" class="d-block w-100">
+</div>
+
+<div class="carousel-item">
+<img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=1200&q=80" class="d-block w-100">
+</div>
+
+<div class="carousel-item">
+<img src="https://images.unsplash.com/photo-1552728089-57bdde30beb3?auto=format&fit=crop&w=1200&q=80" class="d-block w-100">
+</div>
+
+</div>
+
+</div>
+
+<!-- TITLE -->
+<section class="text-center my-5">
+<h1>Everything Your Pet Needs</h1>
+<p>Food, Toys, Care & More</p>
+<button class="btn btn-warning" onclick="window.location.href='products.html'">Shop Now</button>
 </section>
 
 <!-- CATEGORIES -->
 <section class="container text-center my-5">
-  <h2>Shop by Category</h2>
 
-  <div class="row mt-4">
+<h2>Shop by Category</h2>
 
-    <div class="col-md-3">
-      <div class="card p-3" onclick="goToProducts()" style="cursor:pointer;">🐶 Dog</div>
-    </div>
+<div class="row mt-4">
 
-    <div class="col-md-3">
-      <div class="card p-3" onclick="goToProducts()" style="cursor:pointer;">🐱 Cat</div>
-    </div>
+<div class="col-md-3">
+<div class="category-card" onclick="goShop()">🐶 Dog</div>
+</div>
 
-    <div class="col-md-3">
-      <div class="card p-3" onclick="goToProducts()" style="cursor:pointer;">🐦 Bird</div>
-    </div>
+<div class="col-md-3">
+<div class="category-card" onclick="goShop()">🐱 Cat</div>
+</div>
 
-    <div class="col-md-3">
-      <div class="card p-3" onclick="goToProducts()" style="cursor:pointer;">🐹 Guinea Pig</div>
-    </div>
+<div class="col-md-3">
+<div class="category-card" onclick="goShop()">🐦 Bird</div>
+</div>
 
-  </div>
+<div class="col-md-3">
+<div class="category-card" onclick="goShop()">🐹 Guinea Pig</div>
+</div>
+
+</div>
+
 </section>
 
 <!-- PRODUCTS -->
-<section class="container text-center my-5">
-  <h2>Popular Products</h2>
+<section class="container my-5">
 
-  <div class="row mt-4">
+<h2 class="text-center mb-4">Featured Products</h2>
 
-    <!-- PRODUCT 1 -->
-    <div class="col-md-4">
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=500&q=80" class="card-img-top">
-        <div class="card-body">
-          <h5>Dog Food Premium</h5>
-          <p>$25</p>
-          <button class="btn btn-success" onclick="addToCart()">Add to Cart</button>
-        </div>
-      </div>
-    </div>
+<div class="row g-4">
 
-    <!-- PRODUCT 2 (FIXED IMAGE) -->
-    <div class="col-md-4">
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1543852786-1cf6624b9987?auto=format&fit=crop&w=500&q=80" class="card-img-top">
-        <div class="card-body">
-          <h5>Cat Toy Set</h5>
-          <p>$15</p>
-          <button class="btn btn-success" onclick="addToCart()">Add to Cart</button>
-        </div>
-      </div>
-    </div>
+<div class="col-md-3">
+<div class="card">
+<img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=500&q=80">
+<div class="card-body text-center">
+<h6>Dog Food</h6>
+<p>$25</p>
+<button class="btn btn-success w-100" onclick="add()">Add to Cart</button>
+</div>
+</div>
+</div>
 
-    <!-- PRODUCT 3 -->
-    <div class="col-md-4">
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1601758125946-6ec2ef64daf8?auto=format&fit=crop&w=500&q=80" class="card-img-top">
-        <div class="card-body">
-          <h5>Bird Cage</h5>
-          <p>$40</p>
-          <button class="btn btn-success" onclick="addToCart()">Add to Cart</button>
-        </div>
-      </div>
-    </div>
+<div class="col-md-3">
+<div class="card">
+<img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=500&q=80">
+<div class="card-body text-center">
+<h6>Cat Toy</h6>
+<p>$15</p>
+<button class="btn btn-success w-100" onclick="add()">Add to Cart</button>
+</div>
+</div>
+</div>
 
-  </div>
+<div class="col-md-3">
+<div class="card">
+<img src="https://images.unsplash.com/photo-1552728089-57bdde30beb3?auto=format&fit=crop&w=500&q=80">
+<div class="card-body text-center">
+<h6>Bird Cage</h6>
+<p>$40</p>
+<button class="btn btn-success w-100" onclick="add()">Add to Cart</button>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card">
+<img src="https://images.unsplash.com/photo-1601758064139-6c5f5e84f1c3?auto=format&fit=crop&w=500&q=80">
+<div class="card-body text-center">
+<h6>Pet Bed</h6>
+<p>$30</p>
+<button class="btn btn-success w-100" onclick="add()">Add to Cart</button>
+</div>
+</div>
+</div>
+
+</div>
+
 </section>
 
 <!-- SERVICES -->
-<section class="container text-center my-5">
-  <h2>Our Services</h2>
+<section class="bg-light text-center p-5">
 
-  <div class="row mt-4">
-    <div class="col-md-4">✂ Grooming</div>
-    <div class="col-md-4">🏠 Adoption</div>
-    <div class="col-md-4">🚚 Fast Delivery</div>
-  </div>
+<h3>Why Choose Us?</h3>
+
+<div class="row mt-4">
+
+<div class="col-md-4">🚚 Fast Delivery</div>
+<div class="col-md-4">💰 Best Prices</div>
+<div class="col-md-4">❤️ Pet Lovers</div>
+
+</div>
+
 </section>
 
 <!-- CTA -->
 <section class="bg-warning text-center p-5">
-  <h3>Join Paw Paradise Today!</h3>
-  <button class="btn btn-dark" onclick="window.location.href='contact.html'">Sign Up</button>
+
+<h3>Join Paw Paradise Today!</h3>
+<button class="btn btn-dark" onclick="window.location.href='contact.html'">Sign Up</button>
+
 </section>
 
 <!-- NEWSLETTER -->
 <section class="container text-center my-5">
-  <h4>Subscribe to our Newsletter</h4>
 
-  <div class="d-flex justify-content-center mt-3">
-    <input type="email" class="form-control w-50 me-2" placeholder="Enter your email">
-    <button class="btn btn-primary" onclick="subscribe()">Subscribe</button>
-  </div>
+<h4>Subscribe to our Newsletter</h4>
+
+<div class="d-flex justify-content-center mt-3">
+<input class="form-control w-50 me-2" placeholder="Enter your email">
+<button class="btn btn-primary" onclick="subscribe()">Subscribe</button>
+</div>
+
 </section>
 
 <!-- FOOTER -->
-<footer class="bg-dark text-white text-center p-3">
-  <p>© 2026 Paw Paradise | Everything Your Pet Needs</p>
+<footer class="text-center p-4">
+
+<p>© 2026 Paw Paradise</p>
+
 </footer>
 
 <!-- JS -->
 <script>
-function addToCart() {
-  alert("Product added to cart 🛒");
+function add() {
+  alert("Added to cart 🛒");
 }
 
 function subscribe() {
-  alert("Subscribed successfully 📩");
+  alert("Subscribed 📩");
 }
 
-function goToProducts() {
+function goShop() {
   window.location.href = "products.html";
 }
 </script>
