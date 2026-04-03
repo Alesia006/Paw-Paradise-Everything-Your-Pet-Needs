@@ -1,1 +1,18 @@
+.hero {
+  height: 70vh;
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+              url("https://images.unsplash.com/photo-1601758123927-196b8a63f76d");
+  background-size: cover;
+  background-position: center;
+}
 
+.category-card {
+  border-radius: 15px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.category-card:hover {
+  transform: scale(1.05);
+  background-color: #ffe082;
+}
