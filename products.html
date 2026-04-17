@@ -1,1 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Products - Paw Paradise</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  min-height: 100vh;
+}
+
+/* Navbar consistent */
+.navbar {
+  backdrop-filter: blur(10px);
+}
+
+/* Hero heading */
+.hero-heading {
+  text-align: center;
+  margin: 60px 0 40px;
+}
+
+.hero-heading h1 {
+  font-size: 2.8rem;
+  font-weight: bold;
+  text-shadow: 1px 1px 8px rgba(0,0,0,0.5);
+}
+
+/* Search bar */
+.search-bar {
+  max-width: 500px;
+  margin: 20px auto;
+}
+
+/* Category filters */
+.category-filters {
+  text-align: center;
+  margin: 20px 0;
+}
+.category-filters button {
+  margin: 0 5px;
+}
+
+/* Product cards */
+.product-card {
+  border-radius: 20px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(15px);
+  transition: 0.3s;
+  margin: 10px;
+  width: 220px;
+  color: #fff;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+}
+.product-card img {
+  height: 150px;
+  object-fit: cover;
+  width: 100%;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+.product-card h6 {
+  font-weight: bold;
+  margin-top: 10px;
+}
+.product-card p {
+  font-size: 0.85rem;
+}
+.product-card .price {
+  font-weight: bold;
+  color: #28a745;
+}
+.product-card button {
+  border-radius: 10px;
+}
+
+/* Footer */
+footer {
+  color: white;
+  background: rgba(0,0,0,0.2);
+  padding: 20px 0;
+}
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark px-4">
+  <a class="navbar-brand fw-bold" href="index.html">🐾Paw Paradise -  Everything Your Pet Needs🐾</a>
+  <div class="ms-auto">
+    <a href="index.html" class="btn btn-light btn-sm mx-1">Home</a>
+    <a href="products.html" class="btn btn-light btn-sm mx-1">Products</a>
+    <a href="about.html" class="btn btn-light btn-sm mx-1">About</a>
+    <a href="contact.html" class="btn btn-light btn-sm mx-1">Contact</a>
+    <a href="cart.html" class="btn btn-warning btn-sm mx-1" id="cart">🛒 Cart (0)</a>
+  </div>
+</nav>
+
+<!-- Hero heading -->
+<div class="container hero-heading">
+  <h1>Our Products 🐾</h1>
+  <p>Explore quality products for all your pets</p>
+</div>
+
+<!-- Search bar -->
+<div class="search-bar">
+  <input type="text" id="searchInput" class="form-control" placeholder="Search products...">
+</div>
+
+<!-- Category filters -->
+<div class="category-filters">
+  <button class="btn btn-outline-light btn-sm" data-category="all">All</button>
+  <button class="btn btn-outline-light btn-sm" data-category="dog">Dog</button>
+  <button class="btn btn-outline-light btn-sm" data-category="cat">Cat</button>
+  <button class="btn btn-outline-light btn-sm" data-category="bird">Bird</button>
+  <button class="btn btn-outline-light btn-sm" data-category="small pets">Small Pets</button>
+</div>
+
+<!-- Products grid -->
+<div class="container my-5">
+  <div class="d-flex flex-wrap justify-content-center" id="products-container"></div>
+</div>
+
+<!-- Footer -->
+<footer class="text-center">
+  © 2026 Paw Paradise
+</footer>
+
+<script>
+// Cart count
+function updateCartCount() {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  document.getElementById("cart").innerText = "🛒 Cart (" + cart.length + ")";
+}
+updateCartCount();
+
+/* STATE */
+let currentCategory = "all";
+let searchValue = "";
+
+// Products array
+const products = [
+/*  DOG FOOD */
+{ name:"Premium Dry Dog Food", category:"dog", description:"Ushqim i thatë me proteina të larta për energji dhe shëndet të plotë.", price:"25€", image:"images/premiumdrydogfood.jpg"},
+{ name:"Wet Dog Food", category:"dog", description:"Ushqim i lagësht i shijshëm dhe i lehtë për tretje.", price:"18€", image:"images/wetdogfood.jpg"},
+{ name:"Dog Snack Treats", category:"dog", description:"Snack-e të shëndetshme për shpërblim dhe trajnim.", price:"10€", image:"images/dogsnacktreats.jpg"},
+{ name:"Veterinary Diet Dog Food", category:"dog", description:"Dietë speciale për qen me probleme shëndetësore.", price:"30€", image:"images/VeterinaryDietDogFood.jpg"},
+{ name:"Grain-Free Dog Food", category:"dog", description:"Formulë pa drithëra për qen me ndjeshmëri ushqimore.", price:"28€", image:"images/Grain-FreeDogFood.jpg"},
+
+/*  DOG TOYS */
+{ name:"Rubber Bone Toy", category:"dog", description:"Lodër rezistente që ndihmon në pastrimin e dhëmbëve.", price:"8€", image:"images/RubberBoneToy.jpg"},
+{ name:"Rope Tug Toy", category:"dog", description:"Perfekte për lojë tërheqjeje dhe aktivitet fizik.", price:"7€", image:"images/RopeTugToy.jpg"},
+{ name:"Dog Ball", category:"dog", description:"Top i lehtë për lojë në ambient të jashtëm.", price:"6€", image:"images/dogball.jpg"},
+{ name:"Interactive Puzzle Toy", category:"dog", description:"Stimulon mendjen dhe mban qenin aktiv.", price:"12€", image:"images/interactivepuzzletoy.jpg"},
+{ name:"Squeaky Toy", category:"dog", description:"Lodër me zë që tërheq vëmendjen e qenit.", price:"9€", image:"images/squeakytoy.jpg"},
+
+/* DOG ACCESSORIES */
+{ name:"Collar & Leash Set", category:"dog", description:"Set praktik për shëtitje të sigurta.", price:"15€", image:"images/collar&leashset.jpg"},
+{ name:"Dog Harness", category:"dog", description:"Alternativë komode për kontroll më të mirë.", price:"18€", image:"images/dogharness.jpg"},
+{ name:"Dog Jacket", category:"dog", description:"Veshje për mbrojtje nga i ftohti.", price:"20€", image:"images/dogjacket.jpg"},
+{ name:"Food Storage Container", category:"dog", description:"Ruajtje e ushqimit pa lagështi.", price:"14€", image:"images/foodstoragecontainer.jpg"},
+{ name:"Training Pads", category:"dog", description:"Për trajnim dhe higjienë në shtëpi.", price:"11€", image:"images/dogtrainingpads.jpg"},
+
+/* DOG HYGIENE */
+{ name:"Dog Shampoo", category:"dog", description:"Pastron dhe jep aromë të këndshme.", price:"12€", image:"images/dogshampoo.jpeg"},
+{ name:"Cleaning Wipes", category:"dog", description:"Ideale për pastrim të shpejtë.", price:"6€", image:"images/dogcleaningwipes.jpeg"},
+{ name:"Toothbrush Kit", category:"dog", description:"Kujdes për higjienën orale.", price:"9€", image:"images/togtoothbrushkit.jpg"},
+{ name:"Grooming Brush", category:"dog", description:"Heq qimet e tepërta dhe mban leshin të bukur.", price:"10€", image:"images/doggroomingbrush.jpg"},
+{ name:"Paw Care Cream", category:"dog", description:"Mbron dhe hidraton putrat.", price:"8€", image:"images/dogpawcarecream.jpg"},
+
+/*  CAT FOOD */
+{ name:"Premium Cat Dry Food", category:"cat", description:"Ushqim i pasur me proteina për energji ditore.", price:"20€", image:"images/premiumcatdryfood.jpg"},
+{ name:"Wet Cat Food", category:"cat", description:"I shijshëm dhe i lehtë për tretje.", price:"15€", image:"images/wetcatfood.jpg"},
+{ name:"Cat Treat Snacks", category:"cat", description:"Snack-e të shëndetshme për shpërblim.", price:"9€", image:"images/cattreatsnacks.jpg"},
+{ name:"Veterinary Cat Food", category:"cat", description:"Dietë për mace me nevoja speciale.", price:"27€", image:"images/veterinarycatfood.jpg"},
+{ name:"Grain-Free Cat Food", category:"cat",  description:"Formulë pa drithëra për mace sensitive.", price:"24€", image:"images/grainfreecatfood.jpg"},
+
+/*  CAT TOYS */
+{ name:"Mouse Toy", category:"cat",  description:"Stimulon instinktin e gjuetisë.", price:"6€", image:"images/mousetoy.jpg"},
+{ name:"Feather Toy", category:"cat",  description:"Argëtuese dhe aktive për mace.", price:"7€", image:"images/feathertoy.jpg"},
+{ name:"Laser Pointer", category:"cat",  description:"Perfekt për lojë interaktive.", price:"5€", image:"images/laserpointer.jpg"},
+{ name:"Cat Ball", category:"cat",  description:"Top i vogël për lojë të përditshme.", price:"4€", image:"images/catball.jpg"},
+{ name:"Puzzle Toy", category:"cat",  description:"Stimulon mendjen e maces.", price:"10€", image:"images/puzzletoyforcats.jpg"},
+
+/*  CAT ACCESSORIES */
+{ name:"Cat Collar with Bell", category:"cat",  description:"Siguri dhe stil për mace.", price:"8€", image:"images/catcollarwithbell.jpg"},
+{ name:"Cozy Cat Bed", category:"cat",  description:"Komoditet maksimal për pushim.", price:"22€", image:"images/cozycatbed.jpg"},
+{ name:"Food Bowl Set", category:"cat",  description:"Set praktik për ushqim dhe ujë.", price:"10€", image:"images/foodbowlset.jpg"},
+{ name:"Cat Carrier", category:"cat",  description:"Transport i sigurt dhe i lehtë.", price:"25€", image:"images/catcarrier.jpg"},
+{ name:"Scratching Post", category:"cat",  description:"Mbron mobiljet dhe mban mace aktive.", price:"20€", image:"images/scratchingpostforcats.jpg"},
+
+/*  CAT HYGIENE */
+{ name:"Cat Litter Box", description:"Zgjidhje praktike për higjienë.", price:"18€", image:"images/catlitterbox.jpg"},
+{ name:"Litter Sand", description:"Thith aromat dhe mban pastërtinë.", price:"12€", image:"images/littersandforcats.jpg"},
+{ name:"Cleaning Wipes", description:"Pastron shpejt dhe lehtë.", price:"5€", image:"images/cleaningwipesforcats.jpg"},
+{ name:"Grooming Brush", description:"Heq qimet e tepërta.", price:"9€", image:"images/groomingbrushforcats.jpg"},
+{ name:"Cat Shampoo", description:"Për lesh të pastër dhe të butë.", price:"11€", image:"images/catshampoo.jpg"},
+
+/* BIRDS */
+
+  { name:"Premium Bird Seed Mix", category:"bird", description:"Përzierje cilësore për energji dhe ushqyerje të balancuar.", price:"10€", image:"images/premiumbirdseedmix.jpg"},
+{ name:"Parrot Pellets Food", category:"bird", description:"Ushqim i pasur me vitamina për papagaj dhe zogj të mëdhenj.", price:"14€", image:"images/parrotspelletsfood.jpg"},
+{ name:"Canary Seed Mix", category:"bird", description:"Formulë e lehtë dhe e shëndetshme për kanarina.", price:"9€", image:"images/canaryseedmix.jpg"},
+{ name:"Honey Treat Sticks", category:"bird", description:"Snack natyral për shpërblim dhe energji.", price:"6€", image:"images/honeybirdtreatsticks.jpg"},
+{ name:"Bird Vitamin Supplement", category:"bird", description:"Suplement për forcimin e imunitetit dhe shëndetit.", price:"8€", image:"images/birdvitaminsupplement.jpg"},
+
+{ name:"Bird Swing Toy", category:"bird", description:"Lodër e thjeshtë për argëtim dhe lëvizje.", price:"5€", image:"images/birdswingtoy.jpg"},
+{ name:"Parrot Rope Toy", category:"bird", description:"Lodër shumëngjyrëshe për aktivitet fizik.", price:"9€", image:"images/parrotropetoy.jpg"},
+{ name:"Bell Toy", category:"bird", description:"Zë i lehtë që stimulon zogun.", price:"4€", image:"images/belltoy.jpg"},
+{ name:"Wooden Ladder Toy", category:"bird", description:"Ndihmon në ngjitje dhe ushtrim fizik.", price:"7€", image:"images/woodenladdertoy.jpg"},
+{ name:"Mirror Toy", category:"bird", description:"Argëton zogun duke reflektuar imazhin e tij.", price:"6€", image:"images/mirrortoy.jpg"},
+
+{ name:"Bird Cage", category:"bird", description:"Kafaz i sigurt dhe i rehatshëm për zogj.", price:"35€", image:"images/birdcage.jpg"},
+{ name:"Feeder Bowl", category:"bird", description:"Tas praktik për ushqim.", price:"4€", image:"images/feederbowl.jpg"},
+{ name:"Water Dispenser", category:"bird", description:"Siguron ujë të pastër gjatë gjithë kohës.", price:"5€", image:"images/birdwaterdispenser.jpg"},
+{ name:"Travel Cage", category:"bird", description:"Për transport të lehtë dhe të sigurt.", price:"28€", image:"images/travelcageforbirds.jpg"},
+
+{ name:"Cage Cleaner Spray", category:"bird", description:"Pastron dhe dezinfekton kafazin.", price:"7€", image:"images/cagecleanerspray.jpg"},
+{ name:"Bird Bath", category:"bird", description:"Lejon zogun të lahet dhe të qëndrojë i pastër.", price:"10€", image:"images/birdbath.jpg"},
+{ name:"Cage Liner Paper", category:"bird", description:"Lehtëson pastrimin e përditshëm.", price:"6€", image:"images/cagelinerpaper.jpg"},
+{ name:"Grooming Spray", category:"bird", description:"Mban pendët të buta dhe të shëndetshme.", price:"8€", image:"images/groomingspray.jpg"},
+{ name:"Nail Trimmer", category:"bird", description:"Për kujdes të thonjve.", price:"9€", image:"images/nailtrimmerforbirds.jpg"},
+
+/* SMALL PETS */
+{ name:"Hamster Food Mix", category:"small pets", description:"Përzierje e pasur me fara për energji dhe shëndet.", price:"9€", image:"images/hamsterfoodmix.jpg"},
+{ name:"Guinea Pig Pellets", category:"small pets", description:"Ushqim i balancuar për kavje.", price:"12€", image:"images/guineapigpallets.jpg"},
+{ name:"Timothy Hay",category:"small pets", description:"Sanë natyral për tretje të mirë.", price:"11€", image:"images/timothyhay.jpg"},
+{ name:"Treat Sticks",category:"small pets", description:"Snack për shpërblim dhe argëtim.", price:"5€", image:"images/treatsticksforhamsters.jpg"},
+{ name:"Vitamin Drops",category:"small pets", description:"Suplemente për shëndet më të mirë.", price:"7€", image:"images/vitamindropsforhamsters.jpg"},
+
+{ name:"Silent Wheel",category:"small pets", description:"Rrotë pa zhurmë për aktivitet.", price:"12€", image:"images/silentwheel.jpg.jpeg"},
+{ name:"Tunnel Toy",category:"small pets", description:"Tunel për eksplorim dhe lojë.", price:"10€", image:"images/tunneltoy.jpg.jpeg"},
+{ name:"Wood Chew Toy",category:"small pets", description:"Ndihmon në mirëmbajtjen e dhëmbëve.", price:"6€", image:"images/woodchewtoy.jpg"},
+{ name:"Exercise Ball",category:"small pets", description:"Lejon lëvizje të lirë jashtë kafazit.", price:"14€", image:"images/exercizeball.jpg"},
+{ name:"Bridge Toy",category:"small pets", description:"Lodër për ngjitje dhe argëtim.", price:"8€", image:"images/bridgetoy.jpg.jpeg"},
+
+{ name:"Hamster Cage",category:"small pets", description:"Kafaz komod për jetesë.", price:"28€", image:"images/hamstercage.jpg"},
+{ name:"Guinea Pig Cage",category:"small pets", description:"Hapësirë e madhe për kavje.", price:"40€", image:"images/guineapigcage.jpg"},
+{ name:"Water Bottle",category:"small pets", description:"Shishe praktike për ujë.", price:"5€", image:"images/waterbottleforhamsters.jpg"},
+{ name:"Food Bowl",category:"small pets", description:"Tas i qëndrueshëm për ushqim.", price:"4€", image:"images/hamsterfoodbowl.jpg"},
+{ name:"Pet Carrier",category:"small pets", description:"Transport i sigurt.", price:"20€", image:"images/smallpetcarrier.jpg"},
+
+{ name:"Bedding Wood Shavings",category:"small pets", description:"Material për rehati dhe pastërti.", price:"9€", image:"images/bedding.jpg"},
+{ name:"Cage Cleaner",category:"small pets", description:"Pastron dhe dezinfekton.", price:"6€", image:"images/cagecleaner.jpg"},
+{ name:"Odor Control Spray",category:"small pets", description:"Eliminon aromat e pakëndshme.", price:"7€", image:"images/odorcontrolspray.jpg"},
+{ name:"Grooming Brush",category:"small pets", description:"Kujdes për qimet.", price:"8€", image:"images/groomingbrush.jpg"},
+{ name:"Nail Clipper",category:"small pets", description:"Për mirëmbajtjen e thonjve.", price:"6€", image:"images/nailclipper.jpg"}
+]
+
+/* DISPLAY PRODUCTS */
+function displayProducts(items){
+  const container = document.getElementById("products-container");
+  container.innerHTML = "";
+  items.forEach(p=>{
+    container.innerHTML += `
+      <div class="product-card text-center p-2">
+        <img src="${p.image}">
+        <h6>${p.name}</h6>
+        <p class="text-light small">${p.description}</p>
+        <p class="price">${p.price}</p>
+        <button class="btn btn-success w-100" onclick='addToCart(${JSON.stringify(p)})'>Add to Cart</button>
+      </div>
+    `;
+  });
+}
+
+/* ADD TO CART */
+function addToCart(product){
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  cart.push(product);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  updateCartCount();
+}
+
+/* FILTER LOGIC */
+function applyFilters(){
+  let filtered = products;
+  if(currentCategory !== "all"){
+    filtered = filtered.filter(p => p.category === currentCategory);
+  }
+  if(searchValue){
+    filtered = filtered.filter(p =>
+      p.name.toLowerCase().includes(searchValue)
+    );
+  }
+  displayProducts(filtered);
+}
+
+/* CATEGORY CLICK */
+document.querySelectorAll(".category-filters button").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    currentCategory = btn.getAttribute("data-category");
+    document.querySelectorAll(".category-filters button").forEach(b=>b.classList.remove("btn-primary"));
+    btn.classList.add("btn-primary");
+    applyFilters();
+  });
+});
+
+/* SEARCH */
+document.getElementById("searchInput").addEventListener("input", function(){
+  searchValue = this.value.toLowerCase();
+  applyFilters();
+});
+
+/* INIT */
+displayProducts(products);
+</script>
+</body>
+</html>
