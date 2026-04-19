@@ -1,266 +1,590 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paw Paradise</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paw Paradise - Everything Your Pet Needs</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- BACKGROUND ME 5 KAFSHË FOTO -->
+    <div class="aesthetic-background">
+    </div>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg glass-nav sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="assets/img/logo.png" alt="Paw Paradise">
+            </a>
+            
+           <div class="d-flex align-items-center gap-2 order-lg-3">
+    <button id="loginBtn" class="btn btn-ghost">
+        <i class="bi bi-person-circle"></i> <span class="d-none d-md-inline">Login</span>
+    </button>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</div>
 
+            <div class="collapse navbar-collapse order-lg-2" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="product.html">Products</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cart.html">
+                            <i class="bi bi-cart-fill"></i> Cart <span class="badge bg-danger ms-1" id="cartCount">0</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="hero-section text-center text-white py-5 position-relative">
+        <div class="container position-relative" style="z-index: 2;">
+            <img src="assets/img/dog-hero.png" alt="Paw Paradise" class="hero-logo mb-4">
+            <h1 class="display-3 fw-bold text-shadow mb-3">Everything Your Pet Needs</h1>
+            <p class="lead mb-4">Premium food, fun toys, and lots of love</p>
+            
+            <div class="d-flex justify-content-center gap-3 mb-4 flex-wrap">
+               
+                <button class="btn btn-ghost btn-lg text-white" id="chatBtn">
+                    <i class="bi bi-robot me-2"></i>Chat with Assistant
+                </button>
+            </div>
+
+           <div class="row justify-content-center align-items-center">
+    <div class="col-md-10">
+        <div class="search-container-with-pets">
+            <div class="pet-icon-left">🐾</div>
+            <div class="search-wrapper glass-card flex-grow-1">
+                <input id="searchInput" class="form-control form-control-lg" type="search" placeholder="Search for products...">
+                <button class="btn btn-gradient" id="searchBtn">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+            <div class="pet-icon-right">🐾</div>
+        </div>
+    </div>
+</div>
+        <div class="hero-wave"></div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="container my-5 position-relative" style="z-index: 2;">
+        <section class="text-center mb-5">
+            <h2 class="display-5 fw-bold mb-3 text-white">Choose by animal</h2>
+            <p class="lead text-white-50">Find the perfect products for your pets</p>
+        </section>
+
+        <div class="row g-4">
+            <div class="col-md-3 col-6">
+                <a href="product.html?category=dogs" class="category-card glass-card text-center p-4">
+                    <div class="animal-circle">
+                        <img src="assets/img/qen.png" alt="Dog">
+                    </div>
+                    <h4 class="mt-3 text-white">Dog</h4>
+                    <p class="text-white-50 small">Food, toys & accessories</p>
+                </a>
+            </div>
+            <div class="col-md-3 col-6">
+                <a href="product.html?category=cats" class="category-card glass-card text-center p-4">
+                    <div class="animal-circle">
+                        <img src="assets/img/mace.png" alt="Cat">
+                    </div>
+                    <h4 class="mt-3 text-white">Cat</h4>
+                    <p class="text-white-50 small">Food, toys & accessories</p>
+                </a>
+            </div>
+
+            <div class="col-md-3 col-6">
+                <a href="product.html?category=birds" class="category-card glass-card text-center p-4">
+                    <div class="animal-circle">
+                        <img src="assets/img/zog.png" alt="Bird">
+                    </div>
+                    <h4 class="mt-3 text-white">Bird</h4>
+                    <p class="text-white-50 small">Food, toys & accessories</p>
+                </a>
+            </div>
+            <div class="col-md-3 col-6">
+                <a href="product.html?category=small" class="category-card glass-card text-center p-4">
+                    <div class="animal-circle">
+                        <img src="assets/img/brejtes.png" alt="Small Pets">
+                    </div>
+                    <h4 class="mt-3 text-white">Small Pets</h4>
+                    <p class="text-white-50 small">Food, toys & accessories</p>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- KONTAKTET -->
+    <section class="container my-5 position-relative" style="z-index: 2;">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold text-white">Contact Us</h2>
+            <p class="lead text-white-50">We are here for you 24/7</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="contact-box-3d text-center">
+                    <div class="contact-icon-3d">
+                        <i class="bi bi-telephone-fill"></i>
+                    </div>
+                    <h5 class="mt-3 text-white">Phone</h5>
+                    <a href="tel:+355684488406" class="contact-link">+355 68 448 8406</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="contact-box-3d text-center">
+                    <div class="contact-icon-3d">
+                        <i class="bi bi-envelope-fill"></i>
+                    </div>
+                    <h5 class="mt-3 text-white">Email</h5>
+                    <a href="mailto:info@pawparadise.al" class="contact-link">info@pawparadise.al</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="contact-box-3d text-center">
+                    <div class="contact-icon-3d">
+                        <i class="bi bi-geo-alt-fill"></i>
+                    </div>
+                    <h5 class="mt-3 text-white">Address</h5>
+                    <p class="text-white-50 mb-0">Tiranë, Shqipëri</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER ME RRJETE SOCIALE -->
+    <footer class="footer glass-nav mt-5 py-4 position-relative" style="z-index: 2;">
+        <div class="container">
+            <div class="social-section">
+                <h5 class="text-center text-white mb-4">Follow us in social media!</h5>
+                <div class="social-icons-footer">
+                    <a href="https://instagram.com" target="_blank" class="social-icon-big instagram">
+                        <i class="bi bi-instagram"></i>
+                        <span>Instagram</span>
+                    </a>
+                    <a href="https://facebook.com" target="_blank" class="social-icon-big facebook">
+                        <i class="bi bi-facebook"></i>
+                        <span>Facebook</span>
+                    </a>
+                    <a href="https://tiktok.com" target="_blank" class="social-icon-big tiktok">
+                        <i class="bi bi-tiktok"></i>
+                        <span>TikTok</span>
+                    </a>
+                    <a href="https://wa.me/355684488406" target="_blank" class="social-icon-big whatsapp">
+                        <i class="bi bi-whatsapp"></i>
+                        <span>WhatsApp</span>
+                    </a>
+                </div>
+            </div>
+            <div class="text-center mt-4 pt-3 border-top border-white border-opacity-25">
+                <p class="mb-0 text-white-50">&copy; 2026 Paw Paradise. All rights reserved.</p>
+            </div>
+        </div>
+        </footer>
+
+     <script>
+     // SEARCH QË TË DËRGON TE PRODUCT.HTML
+function searchProducts() {
+    const query = document.getElementById('searchInput').value.trim();
+    
+    if (query === '') {
+        alert('Shkruaj diçka për të kërkuar!');
+        return;
+    }
+    
+    window.location.href = `product.html?search=${encodeURIComponent(query)}`;
+}
+
+document.getElementById('searchBtn').addEventListener('click', searchProducts);
+document.getElementById('searchInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') searchProducts();
+});
+        </script>
+
+<!-- CHATBOT MODAL -->
+<div id="chatModal" style="display:none; position:fixed; bottom:20px; right:20px; width:380px; height:500px; background:#1a1a2e; border-radius:15px; box-shadow:0 5px 40px rgba(0,0,0,0.5); z-index:9999; flex-direction:column;">
+    <div style="padding:15px; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius:15px 15px 0 0; display:flex; justify-content:space-between; align-items:center;">
+        <h5 style="color:white; margin:0;"> <i class="bi bi-robot"></i> PetBot Assistant</h5>
+        <button id="closeChat" style="background:none; border:none; color:white; font-size:24px; cursor:pointer; line-height:1;">×</button>
+    </div>
+    
+    <div id="chatMessages" style="flex:1; padding:15px; overflow-y:auto; background:#0f0f1e;">
+        <div style="background:#667eea; color:white; padding:10px; border-radius:10px; margin-bottom:10px; max-width:80%;">
+            Hi! I'm PetBot 🐾 Ask me about food, toys, health care, or anything for your pet!
+        </div>
+    </div>
+    
+    <div style="padding:15px; border-top:1px solid #333; display:flex; gap:10px; background:#1a1a2e; border-radius:0 0 15px 15px;">
+        <input type="text" id="userInput" placeholder="Type your question..." style="flex:1; padding:10px; border-radius:8px; border:1px solid #444; background:#0f0f1e; color:white;">
+        <button id="sendBtn" style="padding:10px 15px; border-radius:8px; border:none; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); color:white; cursor:pointer;">
+            <i class="bi bi-send"></i>
+        </button>
+    </div>
+</div>
+
+<script>
+// Open/close chat
+document.getElementById('chatBtn').onclick = function() {
+    document.getElementById('chatModal').style.display = 'flex';
+};
+
+document.getElementById('closeChat').onclick = function() {
+    document.getElementById('chatModal').style.display = 'none';
+};
+
+// Smart keyword-based responses - NO INTERNET NEEDED
+function getBotResponse(input) {
+    const msg = input.toLowerCase();
+    
+    if (msg.includes('dog') && msg.includes('food')) {
+        return "For dogs, I recommend Premium Dry Food for daily nutrition 🐕 We also have wet food for picky eaters. Check our Products page for options!";
+    }
+    else if (msg.includes('cat') && msg.includes('food')) {
+        return "Cats love our Tuna & Salmon formula! 🐱 We have dry kibble and wet food. Grain-free options available too!";
+    }
+    else if (msg.includes('toy')) {
+        return "We have lots of toys! 🎾 Chew toys for dogs, feather wands for cats, and puzzle toys for mental stimulation. What's your pet?";
+    }
+    else if (msg.includes('sick') || msg.includes('vet') || msg.includes('health')) {
+        return "If your pet seems sick, please contact a vet immediately 🩺 For general health, we recommend quality food and regular checkups. I can suggest supplements too!";
+    }
+    else if (msg.includes('price') || msg.includes('cost') || msg.includes('buy')) {
+        return "For exact prices and stock, please visit our Products page 💰 You can also filter by Dog, Cat, Bird, or Fish!";
+    }
+    else if (msg.includes('bird')) {
+        return "For birds we have seed mixes, millet sprays, and fun toys! 🦜 What kind of bird do you have?";
+    }
+    else if (msg.includes('fish')) {
+        return "For fish we have flakes, pellets, and tank decorations 🐠 Fresh water or salt water?";
+    }
+    else if (msg.includes('hello') || msg.includes('hi') || msg.includes('hey')) {
+        return "Hello! 👋 How can I help you and your pet today?";
+    }
+    else if (msg.includes('thank')) {
+        return "You're welcome! 😊 Anything else I can help with?";
+    }
+    else {
+        return "I can help with food, toys, health tips, and product info! 🐾 Try asking: 'food for my dog' or 'cat toys'. For specific products, check our Products page!";
+    }
+}
+
+function sendMessage() {
+    const input = document.getElementById('userInput');
+    const messagesDiv = document.getElementById('chatMessages');
+    const userText = input.value.trim();
+    
+    if (userText === '') return;
+    
+    // Show user message
+    messagesDiv.innerHTML += `
+        <div style="background:#444; color:white; padding:10px; border-radius:10px; margin-bottom:10px; max-width:80%; margin-left:auto; text-align:right;">
+            ${userText}
+        </div>
+    `;
+    input.value = '';
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    
+    // Show "typing..." then reply
+    setTimeout(() => {
+        const botReply = getBotResponse(userText);
+        messagesDiv.innerHTML += `
+            <div style="background:#667eea; color:white; padding:10px; border-radius:10px; margin-bottom:10px; max-width:80%;">
+                ${botReply}
+            </div>
+        `;
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }, 600);
+}
+
+document.getElementById('sendBtn').onclick = sendMessage;
+document.getElementById('userInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') sendMessage();
+});
+</script>
+</script>
 <style>
-body {
-  font-family: Arial;
+.hero-section {
+    position: relative;
+    overflow: hidden;
 }
 
-.navbar {
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+.paw {
+    position: absolute;
+    font-size: 40px;
+    opacity: 0.15;
+    color: #667eea;
+    pointer-events: none;
+    z-index: 0;
+    animation: floatPaw 25s infinite ease-in-out;
+    transform: rotate(var(--rotation));
 }
 
-.card {
-  transition: 0.3s;
+.paw:nth-child(1) {
+    left: 5%; top: 15%;
+    --rotation: -15deg;
+    animation-delay: 0s;
+    font-size: 50px;
 }
 
-.card:hover {
-  transform: scale(1.05);
+.paw:nth-child(2) {
+    right: 10%; top: 25%;
+    --rotation: 25deg;
+    animation-delay: 3s;
+    font-size: 35px;
 }
 
-.card img {
-  height: 200px;
-  object-fit: cover;
+.paw:nth-child(3) {
+    left: 15%; bottom: 20%;
+    --rotation: 10deg;
+    animation-delay: 6s;
+    font-size: 45px;
 }
 
-.category-card {
-  cursor: pointer;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
+.paw:nth-child(4) {
+    right: 20%; bottom: 30%;
+    --rotation: -20deg;
+    animation-delay: 2s;
+    font-size: 40px;
 }
 
-.category-card:hover {
-  background-color: #f8f9fa;
+.paw:nth-child(5) {
+    left: 50%; top: 10%;
+    --rotation: 15deg;
+    animation-delay: 8s;
+    font-size: 30px;
 }
 
-footer {
-  background: #222;
-  color: white;
+.paw:nth-child(6) {
+    right: 40%; bottom: 15%;
+    --rotation: -10deg;
+    animation-delay: 4s;
+    font-size: 55px;
+}
+
+.paw:nth-child(7) {
+    left: 30%; top: 50%;
+    --rotation: 30deg;
+    animation-delay: 1s;
+    font-size: 35px;
+}
+
+@keyframes floatPaw {
+    0%, 100% { 
+        transform: translateY(0px) translateX(0px) rotate(var(--rotation));
+        opacity: 0.1;
+    }
+    25% { 
+        transform: translateY(-20px) translateX(15px) rotate(calc(var(--rotation) + 5deg));
+        opacity: 0.2;
+    }
+    50% { 
+        transform: translateY(-5px) translateX(-10px) rotate(calc(var(--rotation) - 3deg));
+        opacity: 0.15;
+    }
+    75% { 
+        transform: translateY(-30px) translateX(5px) rotate(calc(var(--rotation) + 8deg));
+        opacity: 0.25;
+    }
+}
+</style>
+<style>
+.hero-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.paw {
+    position: absolute;
+    font-size: 80px;
+    opacity: 0.2;
+    color: #667eea;
+    pointer-events: none;
+    z-index: 0;
+    animation: floatPaw 25s infinite ease-in-out;
+    transform: rotate(var(--rotation));
+    filter: blur(0.5px);
+}
+
+/* Dark mode - putra më të ndritshme */
+body.dark-mode .paw {
+    color: #8b9cff;
+    opacity: 0.25;
+}
+
+.paw:nth-child(1) {
+    left: 5%; top: 15%;
+    --rotation: -15deg;
+    animation-delay: 0s;
+    font-size: 100px;
+}
+
+.paw:nth-child(2) {
+    right: 8%; top: 20%;
+    --rotation: 25deg;
+    animation-delay: 3s;
+    font-size: 70px;
+}
+
+.paw:nth-child(3) {
+    left: 12%; bottom: 18%;
+    --rotation: 10deg;
+    animation-delay: 6s;
+    font-size: 90px;
+}
+
+.paw:nth-child(4) {
+    right: 15%; bottom: 25%;
+    --rotation: -20deg;
+    animation-delay: 2s;
+    font-size: 80px;
+}
+
+.paw:nth-child(5) {
+    left: 45%; top: 8%;
+    --rotation: 15deg;
+    animation-delay: 8s;
+    font-size: 60px;
+}
+
+.paw:nth-child(6) {
+    right: 35%; bottom: 12%;
+    --rotation: -10deg;
+    animation-delay: 4s;
+    font-size: 110px;
+}
+
+.paw:nth-child(7) {
+    left: 28%; top: 45%;
+    --rotation: 30deg;
+    animation-delay: 1s;
+    font-size: 75px;
+}
+
+.paw:nth-child(8) {
+    right: 50%; top: 60%;
+    --rotation: -25deg;
+    animation-delay: 5s;
+    font-size: 65px;
+}
+
+@keyframes floatPaw {
+    0%, 100% { 
+        transform: translateY(0px) translateX(0px) rotate(var(--rotation)) scale(1);
+        opacity: 0.15;
+    }
+    25% { 
+        transform: translateY(-25px) translateX(20px) rotate(calc(var(--rotation) + 8deg)) scale(1.05);
+        opacity: 0.25;
+    }
+    50% { 
+        transform: translateY(-10px) translateX(-15px) rotate(calc(var(--rotation) - 5deg)) scale(0.95);
+        opacity: 0.2;
+    }
+    75% { 
+        transform: translateY(-35px) translateX(10px) rotate(calc(var(--rotation) + 10deg)) scale(1.02);
+        opacity: 0.3;
+    }
 }
 </style>
 
-</head>
-
-<body>
-
-<!-- TOP BAR -->
-<div class="bg-primary text-white text-center p-2">
-  Pet Supplies & Food Delivered
-</div>
-
-<!-- HEADER -->
-<div class="bg-primary text-white p-3">
-
-  <div class="d-flex justify-content-between align-items-center">
-
-    <!-- MENU -->
-    <div style="font-size:24px; cursor:pointer;">☰</div>
-
-    <!-- LOGO -->
-    <a class="navbar-brand" href="index.html">
-  <img src="images/logo.png" style="height:50px;">
-</a>
-
-    <!-- ICONS -->
-    <div>
-      👤
-      <span style="margin-left:10px;">🛒<span class="badge bg-warning text-dark">0</span></span>
-    </div>
-
-  </div>
-
-  <!-- SEARCH -->
-  <div class="mt-3 d-flex">
-    <input class="form-control" placeholder="Search for products...">
-    <button class="btn btn-light">🔍</button>
-  </div>
-
-</div>
-
-<!-- INFO BAR -->
-<div class="bg-dark text-white text-center p-2">
-  🎉 Easter Sale!
-</div>
-<!-- CATEGORY BAR -->
-<div class="bg-light text-center p-2">
-🐶 Dog | 🐱 Cat | 🐦 Bird | 🐹 Small Pets
-</div>
-
-<!-- SLIDER -->
-<div id="carouselExample" class="carousel slide">
-
-<div class="carousel-inner">
-
-<div class="carousel-item active">
-<img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=1200&q=80" class="d-block w-100">
-</div>
-
-<div class="carousel-item">
-<img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=1200&q=80" class="d-block w-100">
-</div>
-
-<div class="carousel-item">
-<img src="https://images.unsplash.com/photo-1552728089-57bdde30beb3?auto=format&fit=crop&w=1200&q=80" class="d-block w-100">
-</div>
-
-</div>
-
-</div>
-
-<!-- TITLE -->
-<section class="text-center my-5">
-<h1>Everything Your Pet Needs</h1>
-<p>Food, Toys, Care & More</p>
-<button class="btn btn-warning" onclick="window.location.href='products.html'">Shop Now</button>
-</section>
-
-<!-- CATEGORIES -->
-<section class="container text-center my-5">
-
-<h2>Shop by Category</h2>
-
-<div class="row mt-4">
-
-<div class="col-md-3">
-<div class="category-card" onclick="goShop()">🐶 Dog</div>
-</div>
-
-<div class="col-md-3">
-<div class="category-card" onclick="goShop()">🐱 Cat</div>
-</div>
-
-<div class="col-md-3">
-<div class="category-card" onclick="goShop()">🐦 Bird</div>
-</div>
-
-<div class="col-md-3">
-<div class="category-card" onclick="goShop()">🐹 Guinea Pig</div>
-</div>
-
-</div>
-
-</section>
-
-<!-- PRODUCTS -->
-<section class="container my-5">
-
-<h2 class="text-center mb-4">Featured Products</h2>
-
-<div class="row g-4">
-
-<div class="col-md-3">
-<div class="card">
-<img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=500&q=80">
-<div class="card-body text-center">
-<h6>Dog Food</h6>
-<p>$25</p>
-<button class="btn btn-success w-100" onclick="add()">Add to Cart</button>
-</div>
-</div>
-</div>
-
-<div class="col-md-3">
-<div class="card">
-<img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=500&q=80">
-<div class="card-body text-center">
-<h6>Cat Toy</h6>
-<p>$15</p>
-<button class="btn btn-success w-100" onclick="add()">Add to Cart</button>
-</div>
-</div>
-</div>
-
-<div class="col-md-3">
-<div class="card">
-<img src="https://images.unsplash.com/photo-1552728089-57bdde30beb3?auto=format&fit=crop&w=500&q=80">
-<div class="card-body text-center">
-<h6>Bird Cage</h6>
-<p>$40</p>
-<button class="btn btn-success w-100" onclick="add()">Add to Cart</button>
-</div>
-</div>
-</div>
-
-<div class="col-md-3">
-<div class="card">
-<img src="https://images.unsplash.com/photo-1601758064139-6c5f5e84f1c3?auto=format&fit=crop&w=500&q=80">
-<div class="card-body text-center">
-<h6>Pet Bed</h6>
-<p>$30</p>
-<button class="btn btn-success w-100" onclick="add()">Add to Cart</button>
-</div>
-</div>
-</div>
-
-</div>
-
-</section>
-
-<!-- SERVICES -->
-<section class="bg-light text-center p-5">
-
-<h3>Why Choose Us?</h3>
-
-<div class="row mt-4">
-
-<div class="col-md-4">🚚 Fast Delivery</div>
-<div class="col-md-4">💰 Best Prices</div>
-<div class="col-md-4">❤️ Pet Lovers</div>
-
-</div>
-
-</section>
-
-<!-- CTA -->
-<section class="bg-warning text-center p-5">
-
-<h3>Join Paw Paradise Today!</h3>
-<button class="btn btn-dark" onclick="window.location.href='contact.html'">Sign Up</button>
-
-</section>
-
-<!-- NEWSLETTER -->
-<section class="container text-center my-5">
-
-<h4>Subscribe to our Newsletter</h4>
-
-<div class="d-flex justify-content-center mt-3">
-<input class="form-control w-50 me-2" placeholder="Enter your email">
-<button class="btn btn-primary" onclick="subscribe()">Subscribe</button>
-</div>
-
-</section>
-
-<!-- FOOTER -->
-<footer class="text-center p-4">
-
-<p>© 2026 Paw Paradise</p>
-
-</footer>
-
-<!-- JS -->
 <script>
-function add() {
-  alert("Added to cart 🛒");
-}
-
-function subscribe() {
-  alert("Subscribed 📩");
-}
-
-function goShop() {
-  window.location.href = "products.html";
-}
+document.addEventListener('DOMContentLoaded', function() {
+    const hero = document.querySelector('.hero-section');
+    if (!hero) return;
+    
+    // Fshi putrat e vjetra nëse ekzistojnë
+    hero.querySelectorAll('.paw').forEach(p => p.remove());
+    
+    // Krijo 8 putra të mëdha
+    for (let i = 0; i < 8; i++) {
+        const paw = document.createElement('div');
+        paw.className = 'paw';
+        paw.textContent = '🤍';
+        hero.appendChild(paw);
+    }
+});
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- AUTH MODAL -->
+<div class="modal fade" id="authModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content glass-card">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-white">Login / Register</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-pills mb-3">
+                    <li class="nav-item w-50">
+                        <button class="nav-link active w-100" data-bs-toggle="pill" data-bs-target="#login-tab">Login</button>
+                    </li>
+                    <li class="nav-item w-50">
+                        <button class="nav-link w-100" data-bs-toggle="pill" data-bs-target="#register-tab">Register</button>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="login-tab">
+                        <form id="loginForm">
+                            <div class="mb-3">
+                                <label class="form-label text-white">Email</label>
+                                <input type="email" class="form-control" id="loginEmail" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-white">Password</label>
+                                <input type="password" class="form-control" id="loginPassword" required>
+                            </div>
+                            <button type="submit" class="btn btn-gradient w-100">Login</button>
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="register-tab">
+                        <form id="registerForm">
+                            <div class="mb-3">
+                                <label class="form-label text-white">Name</label>
+                                <input type="text" class="form-control" id="regName" required>
+                            </div>
+ </script>
 
-</body>
-</html>
+                            <div class="mb-3">
+                                <label class="form-label text-white">Email</label>
+                                <input type="email" class="form-control" id="regEmail" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-white">Password</label>
+                                <input type="password" class="form-control" id="regPassword" required>
+                            </div>
+                            <button type="submit" class="btn btn-gradient w-100">Register</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</script>
+// PUTRAT
+document.addEventListener('DOMContentLoaded', function() {
+    const hero = document.querySelector('.hero-section');
+    if (!hero) return;
+    hero.querySelectorAll('.paw').forEach(p => p.remove());
+    for (let i = 0; i < 8; i++) {
+        const paw = document.createElement('div');
+        paw.className = 'paw';
+        paw.textContent = '🤍';
+        hero.appendChild(paw);
+    }
+});
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="main.js"></script>
+  </body>
+  </html>
