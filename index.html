@@ -34,7 +34,7 @@
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="product.html">Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="products.html">Products</a></li>
                     <li class="nav-item">
                         <a class="nav-link" href="cart.html">
                             <i class="bi bi-cart-fill"></i> Cart <span class="badge bg-danger ms-1" id="cartCount">0</span>
@@ -85,7 +85,7 @@
 
         <div class="row g-4">
             <div class="col-md-3 col-6">
-                <a href="product.html?category=dogs" class="category-card glass-card text-center p-4">
+                <a href="products.html?category=dogs" class="category-card glass-card text-center p-4">
                     <div class="animal-circle">
                         <img src="assets/img/qen.png" alt="Dog">
                     </div>
@@ -94,7 +94,7 @@
                 </a>
             </div>
             <div class="col-md-3 col-6">
-                <a href="product.html?category=cats" class="category-card glass-card text-center p-4">
+                <a href="products.html?category=cats" class="category-card glass-card text-center p-4">
                     <div class="animal-circle">
                         <img src="assets/img/mace.png" alt="Cat">
                     </div>
@@ -104,7 +104,7 @@
             </div>
 
             <div class="col-md-3 col-6">
-                <a href="product.html?category=birds" class="category-card glass-card text-center p-4">
+                <a href="products.html?category=birds" class="category-card glass-card text-center p-4">
                     <div class="animal-circle">
                         <img src="assets/img/zog.png" alt="Bird">
                     </div>
@@ -113,7 +113,7 @@
                 </a>
             </div>
             <div class="col-md-3 col-6">
-                <a href="product.html?category=small" class="category-card glass-card text-center p-4">
+                <a href="products.html?category=small" class="category-card glass-card text-center p-4">
                     <div class="animal-circle">
                         <img src="assets/img/brejtes.png" alt="Small Pets">
                     </div>
@@ -202,7 +202,7 @@ function searchProducts() {
         return;
     }
     
-    window.location.href = `product.html?search=${encodeURIComponent(query)}`;
+    window.location.href = `products.html?search=${encodeURIComponent(query)}`;
 }
 
 document.getElementById('searchBtn').addEventListener('click', searchProducts);
