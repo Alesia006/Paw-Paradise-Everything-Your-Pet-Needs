@@ -305,19 +305,6 @@ document.querySelectorAll(".category-filters button").forEach(btn=>{
     applyFilters();
   });
 });
-/*Lexo kategorinë nga URL dhe filtro*/
-const urlParams = new URLSearchParams(window.location.search);
-const urlCategory = urlParams.get('category'); 
-if (urlCategory) {
-    currentCategory = urlCategory;
-    document.querySelectorAll(".category-filters button").forEach(btn => {
-        btn.classList.remove("btn-primary");
-        if (btn.getAttribute("data-category") === currentCategory) {
-            btn.classList.add("btn-primary");
-        }
-    });
-}
-applyFilters();
 updateCartCount();
 /* SEARCH */
 document.getElementById("searchInput").addEventListener("input", function(){
