@@ -505,6 +505,89 @@ document.addEventListener('DOMContentLoaded', function() {
         paw.textContent = '🤍';
         hero.appendChild(paw);
     }
+        // --- KONFIGURIMI SIPAS LEKSIONIT ---
+
+// 1. Web Speech API (Speech-to-Text)
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+const recognition = SpeechRecognition ? new SpeechRecognition() : null;
+
+// 2. Simulimi i Sentiment Analysis (Pika 1 e Leksionit)
+function analyzeSentiment(text) {
+    const positiveWords = ['happy', 'love', 'good', 'great', 'mirë', 'shumë', 'bukur'];
+    const negativeWords = ['sad', 'bad', 'broken', 'keq', 'sëmurë', 'nuk', 'problem'];
+    
+    const lowerText = text.toLowerCase();
+    if (positiveWords.some(word => lowerText.includes(word))) return 'Pozitiv';
+    if (negativeWords.some(word => lowerText.includes(word))) return 'Negativ';
+    return 'Neutral';
+}
+
+// 3. Integrimi i Google Translate & AI Response
+async function handleResponse(text) {
+    if (!text.trim()) return;
+
+    const messagesDiv = document.getElementById('chatMessages');
+    const inputLang = document.getElementById('inputLang').value.split('-')[0];
+    const outputLang = document.getElementById('outputLang').value;
+
+    // Shfaq mesazhin e përdoruesit me Sentiment Tag
+    const sentiment = analyzeSentiment(text);
+    const sentimentColor = sentiment === 'Pozitiv' ? '#28a745' : (sentiment === 'Negativ' ? '#dc3545' : '#ffc107');
+    
+    messagesDiv.innerHTML += `
+        <div style="align-self: flex-end; max-width:85%; margin-bottom:10px;">
+            <div style="background:#444; color:white; padding:10px; border-radius:15px 15px 0 15px;">${text}</div>
+            <small style="color:${sentimentColor}; font-size:10px; float:right;">Emocioni: ${sentiment}</small>
+        </div>`;
+
+    // Thirrja e API për Përkthim
+    const translated = await translateText(text, inputLang, outputLang);
+    
+    // Gjenerimi i përgjigjes së AI (Skenari Paw Paradise)
+    let aiReply = `Translated: "${translated}". `;
+    if(text.toLowerCase().includes('qen') || text.toLowerCase().includes('dog')) {
+        aiReply += "Për qentë kemi aksesorë fantastikë!";
+    } else {
+        aiReply += "Si mund t'ju ndihmoj tjetër për kafshët tuaja?";
+    }
+
+    // 4. Text-to-Speech (Leximi me zë)
+    setTimeout(() => {
+        messagesDiv.innerHTML += `
+            <div style="background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); color:white; padding:10px; border-radius:15px 15px 15px 0; align-self: flex-start; max-width:85%;">
+                ${aiReply}
+            </div>`;
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        speak(aiReply, outputLang);
+        
+        // 5. Ruajtja në Historik (Local Storage)
+        saveToHistory(text, aiReply, sentiment);
+    }, 600);
+
+    document.getElementById('userInput').value = '';
+}
+
+// Funksioni për Historikun
+function saveToHistory(userText, botText, sentiment) {
+    let history = JSON.parse(localStorage.getItem('chatHistory') || '[]');
+    history.push({ user: userText, bot: botText, sentiment: sentiment, date: new Date().toLocaleString() });
+    localStorage.setItem('chatHistory', JSON.stringify(history.slice(-10))); // Ruan 10 të fundit
+}
+
+// Event Listeners për Voice
+if (recognition) {
+    document.getElementById('voiceBtn').onclick = () => {
+        recognition.lang = document.getElementById('inputLang').value;
+        recognition.start();
+        document.getElementById('voiceWave').style.display = 'block';
+    };
+
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        document.getElementById('voiceWave').style.display = 'none';
+        handleResponse(transcript);
+    };
+}
 });
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="main.js"></script>
