@@ -212,211 +212,184 @@ document.getElementById('searchInput').addEventListener('keypress', function(e) 
         </script>
 
 <!-- CHATBOT MODAL -->
-<div id="chatModal" style="display:none; position:fixed; bottom:20px; right:20px; width:380px; height:550px; background:#1a1a2e; border-radius:15px; box-shadow:0 5px 40px rgba(0,0,0,0.5); z-index:9999; flex-direction:column; border: 1px solid rgba(255,255,255,0.1);">
+<div id="chatModal" style="display:none; position:fixed; bottom:20px; right:20px; width:380px; height:550px; background:#1a1a2e; border-radius:15px; box-shadow:0 5px 40px rgba(0,0,0,0.5); z-index:9999; flex-direction:column; border: 1px solid rgba(255,255,255,0.1); font-family: 'Poppins', sans-serif;">
     <div style="padding:15px; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius:15px 15px 0 0; display:flex; justify-content:space-between; align-items:center;">
-        <h5 style="color:white; margin:0;"> <i class="bi bi-robot"></i> PetBot AI Voice</h5>
-        <button id="closeChat" style="background:none; border:none; color:white; font-size:24px; cursor:pointer; line-height:1;">×</button>
+        <h5 style="color:white; margin:0; font-size: 16px;"> <i class="bi bi-robot"></i> PetBot AI Assistant</h5>
+        <button id="closeChat" style="background:none; border:none; color:white; font-size:24px; cursor:pointer;">×</button>
     </div>
 
     <div style="padding:8px; display:flex; gap:5px; background: rgba(0,0,0,0.3); border-bottom: 1px solid #333;">
-        <select id="inputLang" class="form-select form-select-sm bg-dark text-white border-secondary" style="font-size: 12px;">
-            <option value="sq-AL">Nga: Shqip</option>
-            <option value="en-US">Nga: Anglisht</option>
-            <option value="it-IT">Nga: Italisht</option>
-            <option value="de-DE">Nga: Gjermanisht</option>
-        </select>
-        <select id="outputLang" class="form-select form-select-sm bg-dark text-white border-secondary" style="font-size: 12px;">
-            <option value="en">Përkthe: Anglisht</option>
-            <option value="sq">Përkthe: Shqip</option>
-            <option value="it">Përkthe: Italisht</option>
-            <option value="fr">Përkthe: Frëngjisht</option>
+        <select id="inputLang" class="form-select form-select-sm bg-dark text-white border-secondary" style="font-size: 11px;">
+            <option value="sq-AL">Nga: Shqip</option>
+            <option value="en-US">Nga: Anglisht</option>
+            <option value="it-IT">Nga: Italisht</option>
+            <option value="de-DE">Nga: Gjermanisht</option>
+            <option value="fr-FR">Nga: Frengjisht</option>
+            <option value="el-EL">Nga: Greqisht</option>
+            <option value="es-ES">Nga: Spanjisht</option>
+            <option value="pt-PT">Nga: Portugalisht</option>
+            <option value="ro-RO">Nga: Rumanisht</option>
+        </select>
+        <select id="outputLang" class="form-select form-select-sm bg-dark text-white border-secondary" style="font-size: 12px;">
+            <option value="en">Përkthe: Anglisht</option>
+            <option value="sq">Përkthe: Shqip</option>
+            <option value="it">Përkthe: Italisht</option>
+            <option value="fr">Përkthe: Frëngjisht</option>
+             <option value="de">Përkthe: Gjermanisht</option>
+             <option value="el">Përkthe: Greqisht</option>
+             <option value="pt">Përkthe:Portugalisht</option>
+             <option value="ro">Përkthe: Rumanisht</option>
+             <option value="es">Përkthe: Spanjisht</option>
+            
         </select>
     </div>
     
-    <div id="chatMessages" style="flex:1; padding:15px; overflow-y:auto; background:#0f0f1e; display: flex; flex-direction: column; gap: 10px;">
-        <div style="background:#667eea; color:white; padding:10px; border-radius:10px; align-self: flex-start; max-width:85%;">
-            Hi! I'm your AI Voice Assistant 🐾 I can translate and talk. Try clicking the microphone!
+    <div id="chatMessages" style="flex:1; padding:15px; overflow-y:auto; background:#0f0f1e; display: flex; flex-direction: column; gap: 10px; scroll-behavior: smooth;">
+        <div style="background:rgba(255,255,255,0.05); color:white; padding:10px; border-radius:10px; align-self: flex-start; max-width:85%; border: 1px solid rgba(255,255,255,0.1);">
+            Përshëndetje! Unë jam PetBot. Më flisni në çdo gjuhë që dëshironi! 🐾
         </div>
     </div>
 
-    <div id="voiceWave" style="display:none; text-align:center; padding: 5px; background: #0f0f1e;">
-        <span style="color: #764ba2; font-size: 12px;"><i class="bi bi-mic-fill"></i> Listening...</span>
+    <div id="voiceWave" style="display:none; text-align:center; padding: 8px; background: #0f0f1e;">
+        <span style="color: #ff4b2b; font-size: 12px; font-weight: bold; animation: blink 1s infinite;"><i class="bi bi-mic-fill"></i> Duke ju dëgjuar...</span>
     </div>
     
     <div style="padding:15px; border-top:1px solid #333; display:flex; gap:10px; background:#1a1a2e; border-radius:0 0 15px 15px;">
-        <button id="voiceBtn" style="background:#333; border:none; color:white; border-radius:50%; width:40px; height:40px; cursor:pointer;">
+        <button id="voiceBtn" style="background:#333; border:none; color:white; border-radius:50%; width:42px; height:42px; cursor:pointer; transition: 0.3s;">
             <i class="bi bi-mic"></i>
         </button>
-        <input type="text" id="userInput" placeholder="Type or speak..." style="flex:1; padding:10px; border-radius:8px; border:1px solid #444; background:#0f0f1e; color:white;">
+        <input type="text" id="userInput" placeholder="Shkruaj ose flit..." style="flex:1; padding:10px; border-radius:8px; border:1px solid #444; background:#0f0f1e; color:white; outline: none;">
         <button id="sendBtn" style="padding:10px 15px; border-radius:8px; border:none; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); color:white; cursor:pointer;">
             <i class="bi bi-send"></i>
         </button>
     </div>
 </div>
 
+<style>
+    @keyframes blink { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
+    #voiceBtn:hover { background: #444; transform: scale(1.1); }
+</style>
+
 <script>
-// --- KONFIGURIMI I LOGJIKËS ---
-const chatModal = document.getElementById('chatModal');
-const chatBtn = document.getElementById('chatBtn');
-const closeChat = document.getElementById('closeChat');
-const voiceBtn = document.getElementById('voiceBtn');
-const inputLangSelect = document.getElementById('inputLang');
-const outputLangSelect = document.getElementById('outputLang');
-const messagesDiv = document.getElementById('chatMessages');
+(function() {
+    const chatModal = document.getElementById('chatModal');
+    const chatBtn = document.getElementById('chatBtn'); // Butoni në Hero section
+    const closeChat = document.getElementById('closeChat');
+    const voiceBtn = document.getElementById('voiceBtn');
+    const userInput = document.getElementById('userInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const messagesDiv = document.getElementById('chatMessages');
+    const voiceWave = document.getElementById('voiceWave');
 
-// Open/Close
-chatBtn.onclick = () => chatModal.style.display = 'flex';
-closeChat.onclick = () => chatModal.style.display = 'none';
+    // Hapja dhe mbyllja
+    if(chatBtn) chatBtn.onclick = () => chatModal.style.display = 'flex';
+    closeChat.onclick = () => chatModal.style.display = 'none';
 
-// 1. LIDHJA ME AI PËR PËRKTHIM (API E GATSHME)
-async function translateText(text, sourceLang, targetLang) {
-    const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sourceLang}&tl=${targetLang}&dt=t&q=${encodeURI(text)}`;
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-        return data[0][0][0];
-    } catch (e) { return text; }
-}
-
-// 2. TEXT TO SPEECH (ZËRI I AI)
-function speak(text, lang) {
-    window.speechSynthesis.cancel();
-    const msg = new SpeechSynthesisUtterance(text);
-    msg.lang = lang;
-    window.speechSynthesis.speak(msg);
-}
-
-// 3. SPEECH TO TEXT (NJOHJA E ZËRIT)
-const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-recognition.continuous = false;
-
-voiceBtn.onclick = () => {
-    recognition.lang = inputLangSelect.value;
-    recognition.start();
-    document.getElementById('voiceWave').style.display = 'block';
-};
-
-recognition.onresult = (event) => {
-    const transcript = event.results[0][0].transcript;
-    document.getElementById('userInput').value = transcript;
-    document.getElementById('voiceWave').style.display = 'none';
-    handleResponse(transcript);
-};
-
-// 4. PROCESIMI I MESAZHEVE
-async function handleResponse(text) {
-    if (!text.trim()) return;
-
-    // Shfaq mesazhin e përdoruesit
-    messagesDiv.innerHTML += `<div style="background:#444; color:white; padding:10px; border-radius:10px; align-self: flex-end; max-width:85%;">${text}</div>`;
-    
-    const source = inputLangSelect.value.split('-')[0];
-    const target = outputLangSelect.value;
-
-    // AI Translation
-    const translated = await translateText(text, source, target);
-    
-    // Logjika e Paw Paradise
-    let responseText = `Translated: "${translated}"`;
-    if(text.toLowerCase().includes('dog') || text.toLowerCase().includes('qen')) {
-        responseText += " 🐕 For dogs, we recommend our premium grain-free food!";
-    } else if (text.toLowerCase().includes('cat') || text.toLowerCase().includes('mace')) {
-        responseText += " 🐱 Cats love our new laser toys and tuna treats!";
+    // 1. Analiza e Sentimentit
+    function analyzeSentiment(text) {
+        const positive = ['mirë', 'bukur', 'dua', 'happy', 'love', 'pëlqen', 'good'];
+        const negative = ['keq', 'sëmurë', 'problem', 'bad', 'nuk', 'jo', 'vështirë'];
+        const lower = text.toLowerCase();
+        if (positive.some(w => lower.includes(w))) return 'Pozitiv 😊';
+        if (negative.some(w => lower.includes(w))) return 'Negativ 😟';
+        return 'Neutral 😐';
     }
 
-    // Shfaq përgjigjen e Bot-it
-    setTimeout(() => {
-        messagesDiv.innerHTML += `<div style="background:#667eea; color:white; padding:10px; border-radius:10px; align-self: flex-start; max-width:85%;">${responseText}</div>`;
+    // 2. Logjika kryesore e Përpunimit
+    async function handleChat(text) {
+        if (!text.trim()) return;
+
+        const inLang = document.getElementById('inputLang').value.split('-')[0];
+        const outLang = document.getElementById('outputLang').value;
+        const sentiment = analyzeSentiment(text);
+
+        // Shfaq mesazhin e përdoruesit
+        addMessageUI(text, 'user', sentiment);
+
+        try {
+            // Përkthimi i mesazhit të përdoruesit në gjuhën e zgjedhur
+            const transUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${inLang}&tl=${outLang}&dt=t&q=${encodeURI(text)}`;
+            const res = await fetch(transUrl);
+            const data = await res.json();
+            const translatedUserText = data[0][0][0];
+
+            // Përgjigja bazë e AI (Shqip)
+            let aiResponse = "Unë jam PetBot, asistenti juaj për kafshët shtëpiake. Si mund t'ju ndihmoj sot?";
+            
+            if(text.toLowerCase().includes('qen')) {
+                aiResponse = "Për qentë kemi ushqim premium dhe lodra që nuk prishen shpejt!";
+            } else if(text.toLowerCase().includes('mace')) {
+                aiResponse = "Macet tona i duan shumë jastëkët e rinj që kanë ardhur në dyqan!";
+            } else if(text.toLowerCase().includes('çmim') || text.toLowerCase().includes('sa kushton')) {
+                aiResponse = "Çmimet tona janë më të lirat në treg për cilësinë që ofrojmë.";
+            }
+
+            // Përkthimi i përgjigjes së AI në gjuhën e dëshiruar
+            const aiTransUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=sq&tl=${outLang}&dt=t&q=${encodeURI(aiResponse)}`;
+            const resAi = await fetch(aiTransUrl);
+            const dataAi = await resAi.json();
+            const finalAiText = dataAi[0][0][0];
+
+            // Shfaq përgjigjen e AI
+            setTimeout(() => {
+                const combinedMsg = `[${outLang.toUpperCase()}]: ${translatedUserText}\n\nPetBot: ${finalAiText}`;
+                addMessageUI(combinedMsg, 'bot');
+                speakText(finalAiText, outLang);
+            }, 600);
+
+        } catch (err) {
+            console.error("Gabim gjatë përpunimit:", err);
+        }
+
+        userInput.value = '';
+    }
+
+    // 3. Funksioni Speech-to-Text (Dëgjimi)
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+        const recognition = new SpeechRecognition();
+        
+        voiceBtn.onclick = () => {
+            recognition.lang = document.getElementById('inputLang').value;
+            recognition.start();
+            voiceWave.style.display = 'block';
+        };
+
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript;
+            voiceWave.style.display = 'none';
+            handleChat(transcript); // E dërgon automatikisht pas dëgjimit
+        };
+
+        recognition.onend = () => { voiceWave.style.display = 'none'; };
+    }
+
+    // 4. Funksioni Text-to-Speech (Leximi me zë)
+    function speakText(text, lang) {
+        window.speechSynthesis.cancel(); // Ndalo zërat e tjerë nëse ka
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = lang;
+        window.speechSynthesis.speak(utterance);
+    }
+
+    // Funksioni për UI e mesazheve
+    function addMessageUI(text, sender, sentiment = '') {
+        const side = sender === 'user' ? 'flex-end' : 'flex-start';
+        const bg = sender === 'user' ? 'rgba(255,255,255,0.1)' : 'linear-gradient(135deg, #667eea, #764ba2)';
+        const tag = sentiment ? `<br><small style="font-size:10px; opacity:0.6;">Sjellja: ${sentiment}</small>` : '';
+
+        messagesDiv.innerHTML += `
+            <div style="align-self: ${side}; max-width:85%; padding:12px; border-radius:15px; background:${bg}; color:white; border: 1px solid rgba(255,255,255,0.1); margin-bottom:5px;">
+                ${text.replace(/\n/g, '<br>')} ${tag}
+            </div>`;
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        speak(responseText, target);
-    }, 500);
+    }
 
-    document.getElementById('userInput').value = '';
-}
-
-document.getElementById('sendBtn').onclick = () => handleResponse(document.getElementById('userInput').value);
-document.getElementById('userInput').onkeypress = (e) => { if(e.key === 'Enter') handleResponse(e.target.value); };
+    // Ngjarjet e dërgimit
+    sendBtn.onclick = () => handleChat(userInput.value);
+    userInput.onkeypress = (e) => { if(e.key === 'Enter') handleChat(userInput.value); };
+})();
 </script>
-/* Dark mode - putra më të ndritshme */
-body.dark-mode .paw {
-    color: #8b9cff;
-    opacity: 0.25;
-}
-
-.paw:nth-child(1) {
-    left: 5%; top: 15%;
-    --rotation: -15deg;
-    animation-delay: 0s;
-    font-size: 100px;
-}
-
-.paw:nth-child(2) {
-    right: 8%; top: 20%;
-    --rotation: 25deg;
-    animation-delay: 3s;
-    font-size: 70px;
-}
-
-.paw:nth-child(3) {
-    left: 12%; bottom: 18%;
-    --rotation: 10deg;
-    animation-delay: 6s;
-    font-size: 90px;
-}
-
-.paw:nth-child(4) {
-    right: 15%; bottom: 25%;
-    --rotation: -20deg;
-    animation-delay: 2s;
-    font-size: 80px;
-}
-
-.paw:nth-child(5) {
-    left: 45%; top: 8%;
-    --rotation: 15deg;
-    animation-delay: 8s;
-    font-size: 60px;
-}
-
-.paw:nth-child(6) {
-    right: 35%; bottom: 12%;
-    --rotation: -10deg;
-    animation-delay: 4s;
-    font-size: 110px;
-}
-
-.paw:nth-child(7) {
-    left: 28%; top: 45%;
-    --rotation: 30deg;
-    animation-delay: 1s;
-    font-size: 75px;
-}
-
-.paw:nth-child(8) {
-    right: 50%; top: 60%;
-    --rotation: -25deg;
-    animation-delay: 5s;
-    font-size: 65px;
-}
-
-@keyframes floatPaw {
-    0%, 100% { 
-        transform: translateY(0px) translateX(0px) rotate(var(--rotation)) scale(1);
-        opacity: 0.15;
-    }
-    25% { 
-        transform: translateY(-25px) translateX(20px) rotate(calc(var(--rotation) + 8deg)) scale(1.05);
-        opacity: 0.25;
-    }
-    50% { 
-        transform: translateY(-10px) translateX(-15px) rotate(calc(var(--rotation) - 5deg)) scale(0.95);
-        opacity: 0.2;
-    }
-    75% { 
-        transform: translateY(-35px) translateX(10px) rotate(calc(var(--rotation) + 10deg)) scale(1.02);
-        opacity: 0.3;
-    }
-}
 </style>
 
 <script>
