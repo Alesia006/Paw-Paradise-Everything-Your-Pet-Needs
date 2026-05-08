@@ -218,31 +218,31 @@ document.getElementById('searchInput').addEventListener('keypress', function(e) 
         <button id="closeChat" style="background:none; border:none; color:white; font-size:24px; cursor:pointer;">×</button>
     </div>
 
-    <div style="padding:8px; display:flex; gap:5px; background: rgba(0,0,0,0.3); border-bottom: 1px solid #333;">
-        <select id="inputLang" class="form-select form-select-sm bg-dark text-white border-secondary" style="font-size: 11px;">
-            <option value="sq-AL">Nga: Shqip</option>
-            <option value="en-US">Nga: Anglisht</option>
-            <option value="it-IT">Nga: Italisht</option>
-            <option value="de-DE">Nga: Gjermanisht</option>
-            <option value="fr-FR">Nga: Frengjisht</option>
-            <option value="el-EL">Nga: Greqisht</option>
-            <option value="es-ES">Nga: Spanjisht</option>
-            <option value="pt-PT">Nga: Portugalisht</option>
-            <option value="ro-RO">Nga: Rumanisht</option>
-        </select>
-        <select id="outputLang" class="form-select form-select-sm bg-dark text-white border-secondary" style="font-size: 12px;">
-            <option value="en">Përkthe: Anglisht</option>
-            <option value="sq">Përkthe: Shqip</option>
-            <option value="it">Përkthe: Italisht</option>
-            <option value="fr">Përkthe: Frëngjisht</option>
-             <option value="de">Përkthe: Gjermanisht</option>
-             <option value="el">Përkthe: Greqisht</option>
-             <option value="pt">Përkthe:Portugalisht</option>
-             <option value="ro">Përkthe: Rumanisht</option>
-             <option value="es">Përkthe: Spanjisht</option>
-            
-        </select>
-    </div>
+   <div style="padding:10px; display:flex; gap:8px; background: rgba(0,0,0,0.4); border-bottom: 1px solid #444;">
+    <select id="inputLang" class="form-select form-select-sm bg-dark text-white border-secondary" style="font-size: 12px; border-radius: 8px;">
+        <option value="sq-AL">🇦🇱 Nga: Shqip</option>
+        <option value="en-US">🇺🇸 Nga: Anglisht</option>
+        <option value="it-IT">🇮🇹 Nga: Italisht</option>
+        <option value="de-DE">🇩🇪 Nga: Gjermanisht</option>
+        <option value="fr-FR">🇫🇷 Nga: Frëngjisht</option>
+        <option value="el-GR">🇬🇷 Nga: Greqisht</option>
+        <option value="es-ES">🇪🇸 Nga: Spanjisht</option>
+        <option value="pt-PT">🇵🇹 Nga: Portugalisht</option>
+        <option value="ro-RO">🇷🇴 Nga: Rumanisht</option>
+    </select>
+    
+    <select id="outputLang" class="form-select form-select-sm bg-dark text-white border-secondary" style="font-size: 12px; border-radius: 8px;">
+        <option value="en">🇺🇸 Përkthe: Anglisht</option>
+        <option value="sq">🇦🇱 Përkthe: Shqip</option>
+        <option value="it">🇮🇹 Përkthe: Italisht</option>
+        <option value="fr">🇫🇷 Përkthe: Frëngjisht</option>
+        <option value="de">🇩🇪 Përkthe: Gjermanisht</option>
+        <option value="el">🇬🇷 Përkthe: Greqisht</option>
+        <option value="pt">🇵🇹 Përkthe: Portugalisht</option>
+        <option value="ro">🇷🇴 Përkthe: Rumanisht</option>
+        <option value="es">🇪🇸 Përkthe: Spanjisht</option>
+    </select>
+</div>
     
     <div id="chatMessages" style="flex:1; padding:15px; overflow-y:auto; background:#0f0f1e; display: flex; flex-direction: column; gap: 10px; scroll-behavior: smooth;">
         <div style="background:rgba(255,255,255,0.05); color:white; padding:10px; border-radius:10px; align-self: flex-start; max-width:85%; border: 1px solid rgba(255,255,255,0.1);">
