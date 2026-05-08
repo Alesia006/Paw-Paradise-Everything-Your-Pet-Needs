@@ -214,7 +214,7 @@ document.getElementById('searchInput').addEventListener('keypress', function(e) 
 <!-- CHATBOT MODAL -->
 <div id="chatModal" style="display:none; position:fixed; bottom:20px; right:20px; width:380px; height:550px; background:#1a1a2e; border-radius:15px; box-shadow:0 5px 40px rgba(0,0,0,0.5); z-index:9999; flex-direction:column; border: 1px solid rgba(255,255,255,0.1); font-family: 'Poppins', sans-serif;">
     <div style="padding:15px; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius:15px 15px 0 0; display:flex; justify-content:space-between; align-items:center;">
-        <h5 style="color:white; margin:0; font-size: 16px;"> <i class="bi bi-robot"></i> PetBot AI Assistant</h5>
+        <h5 style="color:white; margin:0; font-size: 16px;"> <i class="bi bi-robot"></i> PetBot Assistant</h5>
         <button id="closeChat" style="background:none; border:none; color:white; font-size:24px; cursor:pointer;">×</button>
     </div>
 
@@ -235,7 +235,7 @@ document.getElementById('searchInput').addEventListener('keypress', function(e) 
     
     <div id="chatMessages" style="flex:1; padding:15px; overflow-y:auto; background:#0f0f1e; display: flex; flex-direction: column; gap: 10px; scroll-behavior: smooth;">
         <div style="background:rgba(255,255,255,0.05); color:white; padding:10px; border-radius:10px; align-self: flex-start; max-width:85%; border: 1px solid rgba(255,255,255,0.1);">
-            Përshëndetje! Unë jam PetBot. Si mund t'ju ndihmoj për kafshët tuaja sot në Paw Paradise? 🐾
+            Përshëndetje! Unë jam PetBot. Si mund t'ju ndihmoj për kafshët tuaja sot? 🐾
         </div>
     </div>
 
@@ -255,114 +255,103 @@ document.getElementById('searchInput').addEventListener('keypress', function(e) 
 </div>
 
 <script>
-// Izolimi total për të shmangur konfliktet
-const PetBotApp = {
-    responses: {
-        qen: "Në Paw Paradise kemi ushqim premium dhe lodra interaktive për qentë!",
-        mace: "Për macet kemi rërë aromatike dhe ushqime speciale Gourmet.",
-        produkt: "Produktet tona përfshijnë ushqime, aksesorë dhe lodra për çdo kafshë.",
-        lokacion: "Na gjeni në Tiranë, por ofrojmë dërgesa në të gjithë Shqipërinë!",
-        cmim: "Çmimet tona janë shumë ekonomike, duke filluar nga vetëm 5€.",
-        default: "Mirë se vini në Paw Paradise! Si mund t'ju ndihmoj tjetër për kafshën tuaj?"
-    },
+(function() {
+    const chatModal = document.getElementById('chatModal');
+    const chatBtn = document.getElementById('chatBtn');
+    const closeChat = document.getElementById('closeChat');
+    const voiceBtn = document.getElementById('voiceBtn');
+    const userInput = document.getElementById('userInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const messagesDiv = document.getElementById('chatMessages');
+    const voiceWave = document.getElementById('voiceWave');
 
-    init: function() {
-        const sendBtn = document.getElementById('sendBtn');
-        const input = document.getElementById('userInput');
-        const chatBtn = document.getElementById('chatBtn');
-        const closeBtn = document.getElementById('closeChat');
+    // Hap/Mbyll Chat
+    if(chatBtn) chatBtn.onclick = () => chatModal.style.display = 'flex';
+    closeChat.onclick = () => chatModal.style.display = 'none';
 
-        if(sendBtn) sendBtn.onclick = () => this.process();
-        if(input) input.onkeypress = (e) => { if(e.key === 'Enter') this.process(); };
-        
-        if(chatBtn) chatBtn.onclick = () => document.getElementById('chatModal').style.display = 'flex';
-        if(closeBtn) closeBtn.onclick = () => document.getElementById('chatModal').style.display = 'none';
+    // 1. Analiza e Sentimentit
+    function getSentiment(text) {
+        const lower = text.toLowerCase();
+        if (['mirë', 'bukur', 'dua', 'happy', 'love'].some(w => lower.includes(w))) return 'Pozitiv 😊';
+        if (['keq', 'sëmurë', 'problem', 'bad', 'nuk'].some(w => lower.includes(w))) return 'Negativ 😟';
+        return 'Neutral 😐';
+    }
 
-        this.initVoice();
-    },
-
-    process: async function() {
-        const input = document.getElementById('userInput');
-        const text = input.value.trim();
-        if (!text) return;
+    // 2. Logjika Kryesore e Chat-it
+    async function handleChat(text) {
+        if (!text.trim()) return;
 
         const outLang = document.getElementById('outputLang').value;
-        this.addMessage(text, 'user');
-        input.value = '';
+        addMessageUI(text, 'user', getSentiment(text));
 
         let lowerText = text.toLowerCase();
-        let resSq = this.responses.default;
+        let responseText = "";
 
-        // Kontrolli i logjikës fiks sipas fjalëve kyçe
-        if (lowerText.includes('qen')) resSq = this.responses.qen;
-        else if (lowerText.includes('mac')) resSq = this.responses.mace;
-        else if (lowerText.includes('produkt')) resSq = this.responses.produkt;
-        else if (lowerText.includes('lokacion') || lowerText.includes('ku jeni') || lowerText.includes('ndodheni')) resSq = this.responses.lokacion;
-        else if (lowerText.includes('cmim') || lowerText.includes('kushton')) resSq = this.responses.cmim;
+        // Përgjigjet e personalizuara për Paw Paradise (Kontrolli bëhet në Shqip)
+        if (lowerText.includes('qen')) {
+            responseText = "Në Paw Paradise kemi ushqim premium dhe lodra interaktive për qentë!";
+        } else if (lowerText.includes('mac')) {
+            responseText = "Për macet kemi rërë aromatike dhe ushqime speciale Gourmet.";
+        } else if (lowerText.includes('produkt') || lowerText.includes('shiko')) {
+            responseText = "Produktet tona përfshijnë ushqime, aksesorë dhe lodra për çdo kafshë.";
+        } else if (lowerText.includes('lokacion') || lowerText.includes('ku jeni') || lowerText.includes('ndodheni')) {
+            responseText = "Na gjeni në Tiranë, por ofrojmë dërgesa në të gjithë Shqipërinë!";
+        } else if (lowerText.includes('cmim') || lowerText.includes('kushton')) {
+            responseText = "Çmimet tona janë shumë ekonomike, duke filluar nga vetëm 5€.";
+        } else {
+            responseText = "Mirë se vini në Paw Paradise! Si mund t'ju ndihmoj tjetër?";
+        }
 
         try {
-            const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=sq&tl=${outLang}&dt=t&q=${encodeURI(resSq)}`;
-            const response = await fetch(url);
-            const data = await response.json();
-            const translated = data[0][0][0];
+            // Përkthejmë përgjigjen tonë nga Shqipja në gjuhën që ka zgjedhur klienti
+            const transUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=sq&tl=${outLang}&dt=t&q=${encodeURI(responseText)}`;
+            const res = await fetch(transUrl);
+            const data = await res.json();
+            const finalResponse = data[0][0][0];
 
             setTimeout(() => {
-                this.addMessage(`[${outLang.toUpperCase()}]: ${translated}`, 'bot');
-                this.speak(translated, outLang);
+                addMessageUI(`[${outLang.toUpperCase()}]: ${finalResponse}`, 'bot');
+                speak(finalResponse, outLang);
             }, 600);
         } catch (e) {
-            this.addMessage(resSq, 'bot');
+            console.error("Gabim në përkthim:", e);
+            addMessageUI(responseText, 'bot'); 
         }
-    },
 
-    addMessage: function(text, sender) {
-        const msgDiv = document.getElementById('chatMessages');
+        userInput.value = '';
+    }
+
+    function addMessageUI(text, sender, sentiment = '') {
         const side = sender === 'user' ? 'flex-end' : 'flex-start';
         const bg = sender === 'user' ? 'rgba(255,255,255,0.1)' : 'linear-gradient(135deg, #667eea, #764ba2)';
-        
-        msgDiv.innerHTML += `<div style="align-self:${side}; max-width:85%; padding:10px; border-radius:12px; background:${bg}; color:white; margin-bottom:5px; font-size:14px; border: 1px solid rgba(255,255,255,0.1);">${text}</div>`;
-        msgDiv.scrollTop = msgDiv.scrollHeight;
-    },
-
-    speak: function(text, lang) {
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
-            const ut = new SpeechSynthesisUtterance(text);
-            ut.lang = lang;
-            window.speechSynthesis.speak(ut);
-        }
-    },
-
-    initVoice: function() {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (SpeechRecognition) {
-            const rec = new SpeechRecognition();
-            const vBtn = document.getElementById('voiceBtn');
-            const wave = document.getElementById('voiceWave');
-
-            vBtn.onclick = () => {
-                rec.lang = document.getElementById('inputLang').value;
-                rec.start();
-                if(wave) wave.style.display = 'block';
-            };
-
-            rec.onresult = (e) => {
-                const transcript = e.results[0][0].transcript;
-                document.getElementById('userInput').value = transcript;
-                this.process();
-            };
-
-            rec.onend = () => { if(wave) wave.style.display = 'none'; };
-        }
+        messagesDiv.innerHTML += `<div style="align-self:${side}; max-width:85%; padding:10px; border-radius:12px; background:${bg}; color:white; margin-bottom:5px; font-size:14px; border: 1px solid rgba(255,255,255,0.1);">${text}${sentiment ? '<br><small style="opacity:0.6; font-size:10px;">'+sentiment+'</small>' : ''}</div>`;
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
-};
 
-// Nisja e sigurt pas ngarkimit të faqes
-if (document.readyState === "complete" || document.readyState === "interactive") {
-    PetBotApp.init();
-} else {
-    document.addEventListener('DOMContentLoaded', () => PetBotApp.init());
-}
+    function speak(text, lang) {
+        window.speechSynthesis.cancel();
+        const ut = new SpeechSynthesisUtterance(text);
+        ut.lang = lang;
+        window.speechSynthesis.speak(ut);
+    }
+
+    // Eventet e butonave
+    sendBtn.onclick = () => handleChat(userInput.value);
+    userInput.onkeypress = (e) => { if(e.key === 'Enter') handleChat(userInput.value); };
+
+    // Voice Recognition
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+        const rec = new SpeechRecognition();
+        voiceBtn.onclick = () => { 
+            rec.lang = document.getElementById('inputLang').value;
+            rec.start(); 
+            voiceWave.style.display = 'block'; 
+        };
+        rec.onresult = (e) => { handleChat(e.results[0][0].transcript); };
+        rec.onend = () => { voiceWave.style.display = 'none'; };
+    }
+})();
 </script>
 </script>
 <script>
