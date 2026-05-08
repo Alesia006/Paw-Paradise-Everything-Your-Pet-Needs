@@ -217,7 +217,6 @@ document.getElementById('searchInput').addEventListener('keypress', function(e) 
 
     <!-- HEADER -->
     <div style="padding:15px; background:linear-gradient(135deg,#667eea 0%,#764ba2 100%); border-radius:15px 15px 0 0; display:flex; justify-content:space-between; align-items:center;">
-        
         <h5 style="color:white; margin:0;">
             <i class="bi bi-robot"></i> PetBot Assistant
         </h5>
@@ -226,23 +225,6 @@ document.getElementById('searchInput').addEventListener('keypress', function(e) 
             style="background:none; border:none; color:white; font-size:24px; cursor:pointer;">
             ×
         </button>
-
-    </div>
-
-    <!-- LANGUAGE SELECT -->
-    <div style="padding:10px; background:#151525; display:flex; gap:10px;">
-
-        <select id="outputLang"
-            style="flex:1; padding:8px; border-radius:8px; background:#0f0f1e; color:white; border:1px solid #444;">
-
-            <option value="sq">🇦🇱 Shqip</option>
-            <option value="en">🇺🇸 English</option>
-            <option value="it">🇮🇹 Italian</option>
-            <option value="de">🇩🇪 German</option>
-            <option value="fr">🇫🇷 French</option>
-
-        </select>
-
     </div>
 
     <!-- MESSAGES -->
@@ -305,12 +287,9 @@ document.addEventListener("DOMContentLoaded", function () {
         div.style.color = "white";
 
         if (sender === "user") {
-
             div.style.alignSelf = "flex-end";
             div.style.background = "rgba(255,255,255,0.1)";
-
         } else {
-
             div.style.alignSelf = "flex-start";
             div.style.background = "linear-gradient(135deg,#667eea,#764ba2)";
         }
@@ -327,66 +306,65 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let text = message.toLowerCase();
 
-        if (text.includes("qen") || text.includes("dog")) {
-
+        // QEN
+        if (
+            text.includes("qen") ||
+            text.includes("dog")
+        ) {
             return "🐶 Në Paw Paradise kemi ushqim premium dhe lodra për qentë!";
+        }
 
-        } 
-        
-        else if (text.includes("mace") || text.includes("cat")) {
-
+        // MACE
+        else if (
+            text.includes("mace") ||
+            text.includes("cat")
+        ) {
             return "🐱 Për macet kemi ushqime Gourmet dhe aksesorë specialë!";
+        }
 
-        } 
-        
-        else if (text.includes("produkt") || text.includes("products")) {
-
+        // PRODUKTE
+        else if (
+            text.includes("produkt") ||
+            text.includes("products")
+        ) {
             return "🛍️ Kemi ushqime, lodra dhe aksesorë për çdo kafshë.";
+        }
 
-        } 
-        
-        else if (text.includes("cmim") || text.includes("price")) {
-
+        // CMIME
+        else if (
+            text.includes("cmim") ||
+            text.includes("kushton") ||
+            text.includes("price")
+        ) {
             return "💸 Çmimet tona fillojnë nga vetëm 5€.";
+        }
 
-        } 
-        
-        else if (text.includes("lokacion") || text.includes("where")) {
-
+        // LOKACION
+        else if (
+            text.includes("lokacion") ||
+            text.includes("ku jeni") ||
+            text.includes("where")
+        ) {
             return "📍 Ndodhemi në Tiranë dhe bëjmë delivery në gjithë Shqipërinë.";
+        }
 
-        } 
-        
+        // PERSHENDETJE
+        else if (
+            text.includes("hello") ||
+            text.includes("hi") ||
+            text.includes("pershendetje")
+        ) {
+            return "👋 Hello! Welcome to Paw Paradise!";
+        }
+
+        // DEFAULT
         else {
-
             return "🐾 Mirë se vini në Paw Paradise! Si mund t'ju ndihmoj?";
         }
     }
 
-    // PERKTHIMI
-    async function translateText(text, targetLang) {
-
-        try {
-
-            const url =
-            `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
-
-            const response = await fetch(url);
-
-            const data = await response.json();
-
-            return data[0][0][0];
-
-        } catch (error) {
-
-            console.error(error);
-
-            return text;
-        }
-    }
-
     // DERGO MESAZH
-    async function sendMessage() {
+    function sendMessage() {
 
         const text = userInput.value.trim();
 
@@ -394,177 +372,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
         addMessage(text, "user");
 
-        const botReply = getBotReply(text);
-
-        // GJUHA E ZGJEDHUR
-        const selectedLang =
-        document.getElementById("outputLang").value;
-
-        // PERKTHE
-        const translated =
-        await translateText(botReply, selectedLang);
+        const reply = getBotReply(text);
 
         setTimeout(() => {
-
-            addMessage(translated, "bot");
-
-            // ZERI
-            const speech =
-            new SpeechSynthesisUtterance(translated);
-
-            speech.lang = selectedLang;
-
-            window.speechSynthesis.speak(speech);
-
+            addMessage(reply, "bot");
         }, 500);
 
         userInput.value = "";
     }
 
-    // CLICK
+    // BUTTON CLICK
     sendBtn.addEventListener("click", sendMessage);
 
-    // ENTER
+    // ENTER KEY
     userInput.addEventListener("keypress", function (e) {
 
         if (e.key === "Enter") {
-
             sendMessage();
         }
-<script>
 
-function getBotReply(message) {
-
-    let text = message.toLowerCase();
-
-    // DOG
-    if (
-        text.includes("qen") ||
-        text.includes("dog")
-    ) {
-
-        return "🐶 Ne kemi ushqim premium, lodra interaktive dhe aksesorë për qentë.";
-
-    }
-
-    // CAT
-    else if (
-        text.includes("mace") ||
-        text.includes("cat")
-    ) {
-
-        return "🐱 Për macet kemi ushqime Gourmet, lodra dhe rërë aromatike.";
-
-    }
-
-    // BIRD
-    else if (
-        text.includes("zog") ||
-        text.includes("bird")
-    ) {
-
-        return "🐦 Kemi kafaze, fara dhe lodra për zogjtë.";
-
-    }
-
-    // SMALL PETS
-    else if (
-        text.includes("hamster") ||
-        text.includes("lepur") ||
-        text.includes("rabbit")
-    ) {
-
-        return "🐹 Kemi ushqime dhe aksesorë për kafshët e vogla.";
-
-    }
-
-    // FOOD
-    else if (
-        text.includes("ushqim") ||
-        text.includes("food")
-    ) {
-
-        return "🍖 Ne ofrojmë ushqim premium për çdo lloj kafshe.";
-
-    }
-
-    // TOYS
-    else if (
-        text.includes("lodra") ||
-        text.includes("toy")
-    ) {
-
-        return "🧸 Kemi lodra interaktive dhe shumë argëtuese për kafshët.";
-
-    }
-
-    // PRICE
-    else if (
-        text.includes("cmim") ||
-        text.includes("price") ||
-        text.includes("kushton")
-    ) {
-
-        return "💸 Çmimet tona fillojnë nga vetëm 5€.";
-
-    }
-
-    // LOCATION
-    else if (
-        text.includes("ku ndodheni") ||
-        text.includes("lokacion") ||
-        text.includes("where") ||
-        text.includes("location")
-    ) {
-
-        return "📍 Ndodhemi në Tiranë dhe bëjmë delivery në gjithë Shqipërinë.";
-
-    }
-
-    // DELIVERY
-    else if (
-        text.includes("delivery") ||
-        text.includes("dergese")
-    ) {
-
-        return "🚚 Dërgesat bëhen brenda 24 orëve.";
-
-    }
-
-    // PRODUCTS
-    else if (
-        text.includes("produkt") ||
-        text.includes("products")
-    ) {
-
-        return "🛍️ Kemi ushqime, lodra, aksesorë dhe produkte higjiene për kafshët.";
-
-    }
-
-    // HELLO
-    else if (
-        text.includes("hello") ||
-        text.includes("hi") ||
-        text.includes("pershendetje")
-    ) {
-
-        return "👋 Mirë se erdhët në Paw Paradise!";
-
-    }
-
-    // DEFAULT
-    else {
-
-        return "🐾 Mund të pyesni për ushqime, lodra, çmime, delivery ose kafshë të ndryshme.";
-
-    }
-}
-
-</script>
     });
 
 });
 
+</script>
 </script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
