@@ -388,6 +388,72 @@ document.getElementById('searchInput').addEventListener('keypress', function(e) 
     // Ngjarjet e dërgimit
     sendBtn.onclick = () => handleChat(userInput.value);
     userInput.onkeypress = (e) => { if(e.key === 'Enter') handleChat(userInput.value); };
+
+    async function processMessage(text) {
+        if (!text.trim()) return;
+
+        const inLang = document.getElementById('inputLang').value.split('-')[0];
+        const outLang = document.getElementById('outputLang').value;
+        const sentiment = getSentiment(text);
+
+        addMessageToUI(text, 'user', sentiment);
+
+        // --- BAZA E PRODUKTEVE PAW PARADISE ---
+        const products = {
+            qen: "Për qentë kemi: Ushqim Royal Canin, krevate ortopedikë, dhe litarë loje. Gjithashtu kemi shampo anti-alergjike.",
+            mace: "Për macet kemi: Rërë aromatike, pemë për gërvishtje (scratching trees), dhe ushqim të lagësht Gourmet.",
+            ushqim: "Kemi ushqim premium për çdo moshë, nga këlyshët deri te kafshët seniore. Markat kryesore: Acana dhe Orijen.",
+            aksesore: "Aksesorët tanë përfshijnë: qafore me drita LED, çanta transporti, dhe tasa inteligjentë për ushqim.",
+            shendet: "Kemi sektorin e farmacisë me vitamina, mbrojtje ndaj pleshtave (Frontline) dhe suplemente për kyçet.",
+            cmim: "Çmimet tona fillojnë nga 5€ për lodrat dhe deri në 50€ për thasët e mëdhenj të ushqimit premium.",
+            lokacioni: "Dyqani Paw Paradise ndodhet në qendër të qytetit, por ne dërgojmë porosi në të gjithë Shqipërinë!"
+        };
+
+        try {
+            // 1. Përkthejmë inputin në Shqip që sistemi ta kuptojë pavarësisht çfarë gjuhe flet klienti
+            const detectUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${inLang}&tl=sq&dt=t&q=${encodeURI(text)}`;
+            const resDetect = await fetch(detectUrl);
+            const dataDetect = await resDetect.json();
+            const inputInAlbanian = dataDetect[0][0][0].toLowerCase();
+
+            // 2. Gjejmë përgjigjen e duhur bazuar në produktet tona
+            let aiBaseResponse = "Më vjen mirë që pyetët! Ne kemi produkte cilësore për kafshët. Për çfarë specifikisht jeni të interesuar: Qen, Mace apo Shëndet?";
+
+            if (inputInAlbanian.includes('qen')) {
+                aiBaseResponse = products.qen;
+            } else if (inputInAlbanian.includes('mac')) { // kap edhe mace edhe macet
+                aiBaseResponse = products.mace;
+            } else if (inputInAlbanian.includes('ushqim') || inputInAlbanian.includes('ha')) {
+                aiBaseResponse = products.ushqim;
+            } else if (inputInAlbanian.includes('lodr') || inputInAlbanian.includes('aksesor')) {
+                aiBaseResponse = products.aksesore;
+            } else if (inputInAlbanian.includes('semur') || inputInAlbanian.includes('ilaç') || inputInAlbanian.includes('vitamin')) {
+                aiBaseResponse = products.shendet;
+            } else if (inputInAlbanian.includes('sa kushton') || inputInAlbanian.includes('cmim')) {
+                aiBaseResponse = products.cmim;
+            } else if (inputInAlbanian.includes('ku jeni') || inputInAlbanian.includes('adres')) {
+                aiBaseResponse = products.lokacioni;
+            }
+
+            // 3. Përkthejmë përgjigjen finale në gjuhën që ka zgjedhur përdoruesi te "Përkthe:"
+            const aiTransUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=sq&tl=${outLang}&dt=t&q=${encodeURI(aiBaseResponse)}`;
+            const resAi = await fetch(aiTransUrl);
+            const dataAi = await resAi.json();
+            const translatedAi = dataAi[0][0][0];
+
+            // 4. Shfaqja në UI dhe leximi me zë
+            setTimeout(() => {
+                addMessageToUI(`PetBot: ${translatedAi}`, 'bot');
+                speak(translatedAi, outLang);
+            }, 600);
+
+        } catch (err) {
+            console.error("Gabim gjatë përpunimit:", err);
+            addMessageToUI("Më falni, ka një problem me lidhjen.", 'bot');
+        }
+
+        userInput.value = '';
+    }
 })();
 </script>
 </style>
