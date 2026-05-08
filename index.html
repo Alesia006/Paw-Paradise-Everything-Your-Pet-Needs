@@ -212,189 +212,157 @@ document.getElementById('searchInput').addEventListener('keypress', function(e) 
         </script>
 
 <!-- CHATBOT MODAL -->
-<!-- CHATBOT MODAL -->
-<div id="chatModal" style="display:none; position:fixed; bottom:20px; right:20px; width:380px; height:550px; background:#1a1a2e; border-radius:15px; box-shadow:0 5px 40px rgba(0,0,0,0.5); z-index:9999; flex-direction:column; border:1px solid rgba(255,255,255,0.1); font-family:'Poppins',sans-serif;">
-
-    <!-- HEADER -->
-    <div style="padding:15px; background:linear-gradient(135deg,#667eea 0%,#764ba2 100%); border-radius:15px 15px 0 0; display:flex; justify-content:space-between; align-items:center;">
-        <h5 style="color:white; margin:0;">
-            <i class="bi bi-robot"></i> PetBot Assistant
-        </h5>
-
-        <button id="closeChat"
-            style="background:none; border:none; color:white; font-size:24px; cursor:pointer;">
-            ×
-        </button>
+<div id="chatModal" style="display:none; position:fixed; bottom:20px; right:20px; width:380px; height:550px; background:#1a1a2e; border-radius:15px; box-shadow:0 5px 40px rgba(0,0,0,0.5); z-index:9999; flex-direction:column; border: 1px solid rgba(255,255,255,0.1); font-family: 'Poppins', sans-serif;">
+    <div style="padding:15px; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius:15px 15px 0 0; display:flex; justify-content:space-between; align-items:center;">
+        <h5 style="color:white; margin:0; font-size: 16px;"> <i class="bi bi-robot"></i> PetBot AI Assistant</h5>
+        <button id="closeChat" style="background:none; border:none; color:white; font-size:24px; cursor:pointer;">×</button>
     </div>
 
-    <!-- MESSAGES -->
-    <div id="chatMessages"
-        style="flex:1; padding:15px; overflow-y:auto; background:#0f0f1e; display:flex; flex-direction:column; gap:10px;">
-
-        <div style="background:rgba(255,255,255,0.05); color:white; padding:10px; border-radius:10px; max-width:85%;">
-            Përshëndetje 👋 Unë jam PetBot. Si mund t'ju ndihmoj? 🐾
+    <div style="padding:8px; display:flex; gap:5px; background: rgba(0,0,0,0.3); border-bottom: 1px solid #333;">
+        <select id="inputLang" class="form-select form-select-sm bg-dark text-white border-secondary" style="font-size: 11px;">
+            <option value="sq-AL">🇦🇱 Nga: Shqip</option>
+            <option value="en-US">🇺🇸 Nga: Anglisht</option>
+            <option value="it-IT">🇮🇹 Nga: Italisht</option>
+            <option value="de-DE">🇩🇪 Nga: Gjermanisht</option>
+        </select>
+        <select id="outputLang" class="form-select form-select-sm bg-dark text-white border-secondary" style="font-size: 11px;">
+            <option value="sq">🇦🇱 Përkthe: Shqip</option>
+            <option value="en">🇺🇸 Përkthe: Anglisht</option>
+            <option value="it">🇮🇹 Përkthe: Italisht</option>
+            <option value="de">🇩🇪 Përkthe: Gjermanisht</option>
+        </select>
+    </div>
+    
+    <div id="chatMessages" style="flex:1; padding:15px; overflow-y:auto; background:#0f0f1e; display: flex; flex-direction: column; gap: 10px; scroll-behavior: smooth;">
+        <div style="background:rgba(255,255,255,0.05); color:white; padding:10px; border-radius:10px; align-self: flex-start; max-width:85%; border: 1px solid rgba(255,255,255,0.1);">
+            Përshëndetje! Unë jam PetBot. Si mund t'ju ndihmoj për kafshët tuaja sot në Paw Paradise? 🐾
         </div>
-
     </div>
 
-    <!-- INPUT -->
+    <div id="voiceWave" style="display:none; text-align:center; padding: 8px; background: #0f0f1e;">
+        <span style="color: #ff4b2b; font-size: 12px; font-weight: bold; animation: blink 1s infinite;"><i class="bi bi-mic-fill"></i> Duke ju dëgjuar...</span>
+    </div>
+    
     <div style="padding:15px; border-top:1px solid #333; display:flex; gap:10px; background:#1a1a2e; border-radius:0 0 15px 15px;">
-
-        <input type="text"
-            id="userInput"
-            placeholder="Shkruaj këtu..."
-            style="flex:1; padding:10px; border-radius:8px; border:1px solid #444; background:#0f0f1e; color:white; outline:none;">
-
-        <button id="sendBtn"
-            style="padding:10px 15px; border:none; border-radius:8px; background:linear-gradient(135deg,#667eea,#764ba2); color:white; cursor:pointer;">
+        <button id="voiceBtn" style="background:#333; border:none; color:white; border-radius:50%; width:42px; height:42px; cursor:pointer;">
+            <i class="bi bi-mic"></i>
+        </button>
+        <input type="text" id="userInput" placeholder="Shkruaj këtu..." style="flex:1; padding:10px; border-radius:8px; border:1px solid #444; background:#0f0f1e; color:white; outline: none;">
+        <button id="sendBtn" style="padding:10px 15px; border-radius:8px; border:none; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); color:white; cursor:pointer;">
             <i class="bi bi-send"></i>
         </button>
-
     </div>
 </div>
 
-<!-- CHATBOT SCRIPT -->
 <script>
+// Izolimi total për të shmangur konfliktet
+const PetBotApp = {
+    responses: {
+        qen: "Në Paw Paradise kemi ushqim premium dhe lodra interaktive për qentë!",
+        mace: "Për macet kemi rërë aromatike dhe ushqime speciale Gourmet.",
+        produkt: "Produktet tona përfshijnë ushqime, aksesorë dhe lodra për çdo kafshë.",
+        lokacion: "Na gjeni në Tiranë, por ofrojmë dërgesa në të gjithë Shqipërinë!",
+        cmim: "Çmimet tona janë shumë ekonomike, duke filluar nga vetëm 5€.",
+        default: "Mirë se vini në Paw Paradise! Si mund t'ju ndihmoj tjetër për kafshën tuaj?"
+    },
 
-document.addEventListener("DOMContentLoaded", function () {
+    init: function() {
+        const sendBtn = document.getElementById('sendBtn');
+        const input = document.getElementById('userInput');
+        const chatBtn = document.getElementById('chatBtn');
+        const closeBtn = document.getElementById('closeChat');
 
-    const chatBtn = document.getElementById("chatBtn");
-    const chatModal = document.getElementById("chatModal");
-    const closeChat = document.getElementById("closeChat");
+        if(sendBtn) sendBtn.onclick = () => this.process();
+        if(input) input.onkeypress = (e) => { if(e.key === 'Enter') this.process(); };
+        
+        if(chatBtn) chatBtn.onclick = () => document.getElementById('chatModal').style.display = 'flex';
+        if(closeBtn) closeBtn.onclick = () => document.getElementById('chatModal').style.display = 'none';
 
-    const sendBtn = document.getElementById("sendBtn");
-    const userInput = document.getElementById("userInput");
-    const messagesDiv = document.getElementById("chatMessages");
+        this.initVoice();
+    },
 
-    // HAP CHAT
-    chatBtn.onclick = () => {
-        chatModal.style.display = "flex";
-    };
+    process: async function() {
+        const input = document.getElementById('userInput');
+        const text = input.value.trim();
+        if (!text) return;
 
-    // MBYLL CHAT
-    closeChat.onclick = () => {
-        chatModal.style.display = "none";
-    };
+        const outLang = document.getElementById('outputLang').value;
+        this.addMessage(text, 'user');
+        input.value = '';
 
-    // SHFAQ MESAZH
-    function addMessage(text, sender) {
+        let lowerText = text.toLowerCase();
+        let resSq = this.responses.default;
 
-        const div = document.createElement("div");
+        // Kontrolli i logjikës fiks sipas fjalëve kyçe
+        if (lowerText.includes('qen')) resSq = this.responses.qen;
+        else if (lowerText.includes('mac')) resSq = this.responses.mace;
+        else if (lowerText.includes('produkt')) resSq = this.responses.produkt;
+        else if (lowerText.includes('lokacion') || lowerText.includes('ku jeni') || lowerText.includes('ndodheni')) resSq = this.responses.lokacion;
+        else if (lowerText.includes('cmim') || lowerText.includes('kushton')) resSq = this.responses.cmim;
 
-        div.style.maxWidth = "85%";
-        div.style.padding = "10px";
-        div.style.borderRadius = "12px";
-        div.style.color = "white";
+        try {
+            const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=sq&tl=${outLang}&dt=t&q=${encodeURI(resSq)}`;
+            const response = await fetch(url);
+            const data = await response.json();
+            const translated = data[0][0][0];
 
-        if (sender === "user") {
-            div.style.alignSelf = "flex-end";
-            div.style.background = "rgba(255,255,255,0.1)";
-        } else {
-            div.style.alignSelf = "flex-start";
-            div.style.background = "linear-gradient(135deg,#667eea,#764ba2)";
+            setTimeout(() => {
+                this.addMessage(`[${outLang.toUpperCase()}]: ${translated}`, 'bot');
+                this.speak(translated, outLang);
+            }, 600);
+        } catch (e) {
+            this.addMessage(resSq, 'bot');
         }
+    },
 
-        div.innerHTML = text;
+    addMessage: function(text, sender) {
+        const msgDiv = document.getElementById('chatMessages');
+        const side = sender === 'user' ? 'flex-end' : 'flex-start';
+        const bg = sender === 'user' ? 'rgba(255,255,255,0.1)' : 'linear-gradient(135deg, #667eea, #764ba2)';
+        
+        msgDiv.innerHTML += `<div style="align-self:${side}; max-width:85%; padding:10px; border-radius:12px; background:${bg}; color:white; margin-bottom:5px; font-size:14px; border: 1px solid rgba(255,255,255,0.1);">${text}</div>`;
+        msgDiv.scrollTop = msgDiv.scrollHeight;
+    },
 
-        messagesDiv.appendChild(div);
-
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    }
-
-    // PERGJIGJET E BOTIT
-    function getBotReply(message) {
-
-        let text = message.toLowerCase();
-
-        // QEN
-        if (
-            text.includes("qen") ||
-            text.includes("dog")
-        ) {
-            return "🐶 Në Paw Paradise kemi ushqim premium dhe lodra për qentë!";
+    speak: function(text, lang) {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const ut = new SpeechSynthesisUtterance(text);
+            ut.lang = lang;
+            window.speechSynthesis.speak(ut);
         }
+    },
 
-        // MACE
-        else if (
-            text.includes("mace") ||
-            text.includes("cat")
-        ) {
-            return "🐱 Për macet kemi ushqime Gourmet dhe aksesorë specialë!";
-        }
+    initVoice: function() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (SpeechRecognition) {
+            const rec = new SpeechRecognition();
+            const vBtn = document.getElementById('voiceBtn');
+            const wave = document.getElementById('voiceWave');
 
-        // PRODUKTE
-        else if (
-            text.includes("produkt") ||
-            text.includes("products")
-        ) {
-            return "🛍️ Kemi ushqime, lodra dhe aksesorë për çdo kafshë.";
-        }
+            vBtn.onclick = () => {
+                rec.lang = document.getElementById('inputLang').value;
+                rec.start();
+                if(wave) wave.style.display = 'block';
+            };
 
-        // CMIME
-        else if (
-            text.includes("cmim") ||
-            text.includes("kushton") ||
-            text.includes("price")
-        ) {
-            return "💸 Çmimet tona fillojnë nga vetëm 5€.";
-        }
+            rec.onresult = (e) => {
+                const transcript = e.results[0][0].transcript;
+                document.getElementById('userInput').value = transcript;
+                this.process();
+            };
 
-        // LOKACION
-        else if (
-            text.includes("lokacion") ||
-            text.includes("ku jeni") ||
-            text.includes("where")
-        ) {
-            return "📍 Ndodhemi në Tiranë dhe bëjmë delivery në gjithë Shqipërinë.";
-        }
-
-        // PERSHENDETJE
-        else if (
-            text.includes("hello") ||
-            text.includes("hi") ||
-            text.includes("pershendetje")
-        ) {
-            return "👋 Hello! Welcome to Paw Paradise!";
-        }
-
-        // DEFAULT
-        else {
-            return "🐾 Mirë se vini në Paw Paradise! Si mund t'ju ndihmoj?";
+            rec.onend = () => { if(wave) wave.style.display = 'none'; };
         }
     }
+};
 
-    // DERGO MESAZH
-    function sendMessage() {
-
-        const text = userInput.value.trim();
-
-        if (text === "") return;
-
-        addMessage(text, "user");
-
-        const reply = getBotReply(text);
-
-        setTimeout(() => {
-            addMessage(reply, "bot");
-        }, 500);
-
-        userInput.value = "";
-    }
-
-    // BUTTON CLICK
-    sendBtn.addEventListener("click", sendMessage);
-
-    // ENTER KEY
-    userInput.addEventListener("keypress", function (e) {
-
-        if (e.key === "Enter") {
-            sendMessage();
-        }
-
-    });
-
-});
-
+// Nisja e sigurt pas ngarkimit të faqes
+if (document.readyState === "complete" || document.readyState === "interactive") {
+    PetBotApp.init();
+} else {
+    document.addEventListener('DOMContentLoaded', () => PetBotApp.init());
+}
 </script>
 </script>
 <script>
