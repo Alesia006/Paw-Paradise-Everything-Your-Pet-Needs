@@ -431,7 +431,136 @@ document.addEventListener("DOMContentLoaded", function () {
 
             sendMessage();
         }
+<script>
 
+function getBotReply(message) {
+
+    let text = message.toLowerCase();
+
+    // DOG
+    if (
+        text.includes("qen") ||
+        text.includes("dog")
+    ) {
+
+        return "🐶 Ne kemi ushqim premium, lodra interaktive dhe aksesorë për qentë.";
+
+    }
+
+    // CAT
+    else if (
+        text.includes("mace") ||
+        text.includes("cat")
+    ) {
+
+        return "🐱 Për macet kemi ushqime Gourmet, lodra dhe rërë aromatike.";
+
+    }
+
+    // BIRD
+    else if (
+        text.includes("zog") ||
+        text.includes("bird")
+    ) {
+
+        return "🐦 Kemi kafaze, fara dhe lodra për zogjtë.";
+
+    }
+
+    // SMALL PETS
+    else if (
+        text.includes("hamster") ||
+        text.includes("lepur") ||
+        text.includes("rabbit")
+    ) {
+
+        return "🐹 Kemi ushqime dhe aksesorë për kafshët e vogla.";
+
+    }
+
+    // FOOD
+    else if (
+        text.includes("ushqim") ||
+        text.includes("food")
+    ) {
+
+        return "🍖 Ne ofrojmë ushqim premium për çdo lloj kafshe.";
+
+    }
+
+    // TOYS
+    else if (
+        text.includes("lodra") ||
+        text.includes("toy")
+    ) {
+
+        return "🧸 Kemi lodra interaktive dhe shumë argëtuese për kafshët.";
+
+    }
+
+    // PRICE
+    else if (
+        text.includes("cmim") ||
+        text.includes("price") ||
+        text.includes("kushton")
+    ) {
+
+        return "💸 Çmimet tona fillojnë nga vetëm 5€.";
+
+    }
+
+    // LOCATION
+    else if (
+        text.includes("ku ndodheni") ||
+        text.includes("lokacion") ||
+        text.includes("where") ||
+        text.includes("location")
+    ) {
+
+        return "📍 Ndodhemi në Tiranë dhe bëjmë delivery në gjithë Shqipërinë.";
+
+    }
+
+    // DELIVERY
+    else if (
+        text.includes("delivery") ||
+        text.includes("dergese")
+    ) {
+
+        return "🚚 Dërgesat bëhen brenda 24 orëve.";
+
+    }
+
+    // PRODUCTS
+    else if (
+        text.includes("produkt") ||
+        text.includes("products")
+    ) {
+
+        return "🛍️ Kemi ushqime, lodra, aksesorë dhe produkte higjiene për kafshët.";
+
+    }
+
+    // HELLO
+    else if (
+        text.includes("hello") ||
+        text.includes("hi") ||
+        text.includes("pershendetje")
+    ) {
+
+        return "👋 Mirë se erdhët në Paw Paradise!";
+
+    }
+
+    // DEFAULT
+    else {
+
+        return "🐾 Mund të pyesni për ushqime, lodra, çmime, delivery ose kafshë të ndryshme.";
+
+    }
+}
+
+</script>
     });
 
 });
