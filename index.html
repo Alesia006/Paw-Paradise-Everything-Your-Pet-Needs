@@ -290,16 +290,59 @@ document.getElementById('searchInput').addEventListener('keypress', function(e) 
         return 'Neutral 😐';
     }
 
-    // 2. Baza e të Dhënave të Produkteve
+  async function processMessage(text) {
+    if (!text.trim()) return;
+
+    // Marrim gjuhët nga select-et e tua
+    const inLang = document.getElementById('inputLang').value.split('-')[0];
+    const outLang = document.getElementById('outputLang').value;
+    
+    // Shto mesazhin e përdoruesit në ekran
+    addMessageUI(text, 'user', getSentiment(text));
+
+    // Baza e produkteve Paw Paradise
     const products = {
         qen: "Për qentë kemi: Ushqim Royal Canin, krevate ortopedikë dhe litarë loje.",
         mace: "Për macet kemi: Rërë aromatike, pemë gërvishtjeje dhe ushqim Gourmet.",
-        ushqim: "Kemi ushqim premium Acana dhe Orijen për të gjitha llojet e kafshëve.",
-        aksesore: "Gjeni qafore LED, çanta transporti dhe tasa inteligjentë në sektorin tonë.",
-        cmim: "Çmimet tona janë shumë konkurruese, duke filluar nga vetëm 5€!",
-        lokacioni: "Na gjeni në Tiranë, ose bëni porosi online dhe ne e sjellim kudo në Shqipëri."
+        ushqim: "Kemi ushqim premium Acana dhe Orijen për të gjitha kafshët.",
+        aksesore: "Kemi qafore LED, çanta transporti dhe tasa inteligjentë.",
+        cmim: "Çmimet tona janë super, duke filluar nga vetëm 5€!",
+        lokacioni: "Na gjeni në Tiranë, ose bëni porosi online!"
     };
 
+    try {
+        // 1. Kthejmë tekstin e klientit në Shqip që ta kuptojë sistemi
+        const detectUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${inLang}&tl=sq&dt=t&q=${encodeURI(text)}`;
+        const resDetect = await fetch(detectUrl);
+        const dataDetect = await resDetect.json();
+        const sqText = dataDetect[0][0][0].toLowerCase();
+
+        // 2. Gjejmë përgjigjen bazuar në produktet
+        let response = "Mirë se vini në Paw Paradise! Si mund t'ju ndihmojmë për kafshën tuaj?";
+        
+        if(sqText.includes('qen')) response = products.qen;
+        else if(sqText.includes('mac')) response = products.mace;
+        else if(sqText.includes('ushqim')) response = products.ushqim;
+        else if(sqText.includes('aksesor') || sqText.includes('lodr')) response = products.aksesore;
+        else if(sqText.includes('sa kushton') || sqText.includes('cmim')) response = products.cmim;
+
+        // 3. Përkthejmë përgjigjen në gjuhën që kërkon klienti (outLang)
+        const aiTransUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=sq&tl=${outLang}&dt=t&q=${encodeURI(response)}`;
+        const resAi = await fetch(aiTransUrl);
+        const dataAi = await resAi.json();
+        const finalAiText = dataAi[0][0][0];
+
+        // 4. Shfaqim përgjigjen në ekran
+        setTimeout(() => {
+            addMessageUI("PetBot: " + finalAiText, 'bot');
+            speak(finalAiText, outLang); // Përdor funksionin speak që keni
+        }, 600);
+
+    } catch (err) {
+        console.error("Gabim:", err);
+    }
+    userInput.value = '';
+}
     // 3. Logjika e Chat-it
     async function handleChat(text) {
         if (!text.trim()) return;
