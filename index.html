@@ -300,16 +300,60 @@ document.getElementById('searchInput').addEventListener('keypress', function(e) 
     // Shto mesazhin e përdoruesit në ekran
     addMessageUI(text, 'user', getSentiment(text));
 
-    // Baza e produkteve Paw Paradise
-    const products = {
-        qen: "Për qentë kemi: Ushqim Royal Canin, krevate ortopedikë dhe litarë loje.",
-        mace: "Për macet kemi: Rërë aromatike, pemë gërvishtjeje dhe ushqim Gourmet.",
-        ushqim: "Kemi ushqim premium Acana dhe Orijen për të gjitha kafshët.",
-        aksesore: "Kemi qafore LED, çanta transporti dhe tasa inteligjentë.",
-        cmim: "Çmimet tona janë super, duke filluar nga vetëm 5€!",
-        lokacioni: "Na gjeni në Tiranë, ose bëni porosi online!"
-    };
+async function processMessage(text) {
+    if (!text.trim()) return;
 
+    const inLang = document.getElementById('inputLang').value.split('-')[0];
+    const outLang = document.getElementById('outputLang').value;
+    
+    // 1. Shfaq mesazhin e përdoruesit
+    addMessageUI(text, 'user', getSentiment(text));
+
+    // 2. LOGJIKA E PRODUKTEVE (Kushtet)
+    let sqText = text.toLowerCase(); 
+    let response = "";
+
+    // Kontrolli për fjalët kyçe
+    if (sqText.includes('qen')) {
+        response = "Kemi ushqim dhe lodra fantastike për qentë!";
+    } else if (sqText.includes('mac')) {
+        response = "Për macet kemi rërë aromatike dhe ushqim premium Gourmet.";
+    } else if (sqText.includes('produkt') || sqText.includes('shiko')) {
+        response = "Produktet tona përfshijnë ushqime, aksesorë dhe lodra për kafshë.";
+    } else if (sqText.includes('lokacion') || sqText.includes('ku jeni')) {
+        response = "Na gjeni në Tiranë, ose mund të porosisni online në faqen tonë!";
+    } else if (sqText.includes('cmim') || sqText.includes('kushton')) {
+        response = "Çmimet tona fillojnë nga 5€ për aksesorët e thjeshtë.";
+    } else {
+        // Nëse nuk gjen fjalë kyçe, kthe një përgjigje të përgjithshme
+        response = "Si mund t'ju ndihmoj tjetër me kafshët tuaja në Paw Paradise?";
+    }
+
+    try {
+        // 3. PËRKTHIMI FINAL
+        // E kthejmë përgjigjen tonë në gjuhën që ka zgjedhur përdoruesi te "Përkthe"
+        const translateUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=sq&tl=${outLang}&dt=t&q=${encodeURI(response)}`;
+        const res = await fetch(translateUrl);
+        const data = await res.json();
+        const translatedResponse = data[0][0][0];
+
+        // 4. SHFAQJA NË EKRAN
+        setTimeout(() => {
+            // Shtojmë [KODI I GJUHËS] para mesazhit siç e ke në foto
+            const prefix = `[${outLang.toUpperCase()}]: `;
+            addMessageUI(prefix + translatedResponse, 'bot');
+            
+            // Opsionale: Zëri
+            if (typeof speak === "function") speak(translatedResponse, outLang);
+        }, 500);
+
+    } catch (err) {
+        console.error("Gabim gjatë përkthimit:", err);
+        addMessageUI("AI: Ndodhi një gabim, provo përsëri.", 'bot');
+    }
+
+    document.getElementById('userInput').value = '';
+}
     try {
         // 1. Kthejmë tekstin e klientit në Shqip që ta kuptojë sistemi
         const detectUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${inLang}&tl=sq&dt=t&q=${encodeURI(text)}`;
