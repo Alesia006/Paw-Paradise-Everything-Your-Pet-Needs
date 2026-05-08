@@ -214,27 +214,22 @@ document.getElementById('searchInput').addEventListener('keypress', function(e) 
 <!-- CHATBOT MODAL -->
 <div id="chatModal" style="display:none; position:fixed; bottom:20px; right:20px; width:380px; height:550px; background:#1a1a2e; border-radius:15px; box-shadow:0 5px 40px rgba(0,0,0,0.5); z-index:9999; flex-direction:column; border: 1px solid rgba(255,255,255,0.1); font-family: 'Poppins', sans-serif;">
     <div style="padding:15px; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius:15px 15px 0 0; display:flex; justify-content:space-between; align-items:center;">
-        <h5 style="color:white; margin:0; font-size: 16px;"> <i class="bi bi-robot"></i> PetBot AI Assistant</h5>
+        <h5 style="color:white; margin:0; font-size: 16px;"> <i class="bi bi-robot"></i> PetBot Assistant</h5>
         <button id="closeChat" style="background:none; border:none; color:white; font-size:24px; cursor:pointer;">×</button>
     </div>
 
-    <div style="padding:10px; display:flex; gap:8px; background: rgba(0,0,0,0.4); border-bottom: 1px solid #444;">
-        <select id="inputLang" class="form-select form-select-sm bg-dark text-white border-secondary" style="font-size: 12px;">
+    <div style="padding:8px; display:flex; gap:5px; background: rgba(0,0,0,0.3); border-bottom: 1px solid #333;">
+        <select id="inputLang" class="form-select form-select-sm bg-dark text-white border-secondary" style="font-size: 11px;">
             <option value="sq-AL">🇦🇱 Nga: Shqip</option>
             <option value="en-US">🇺🇸 Nga: Anglisht</option>
             <option value="it-IT">🇮🇹 Nga: Italisht</option>
             <option value="de-DE">🇩🇪 Nga: Gjermanisht</option>
-            <option value="fr-FR">🇫🇷 Nga: Frëngjisht</option>
-            <option value="el-GR">🇬🇷 Nga: Greqisht</option>
-            <option value="es-ES">🇪🇸 Nga: Spanjisht</option>
-            <option value="pt-PT">🇵🇹 Nga: Portugalisht</option>
         </select>
-        <select id="outputLang" class="form-select form-select-sm bg-dark text-white border-secondary" style="font-size: 12px;">
+        <select id="outputLang" class="form-select form-select-sm bg-dark text-white border-secondary" style="font-size: 11px;">
             <option value="sq">🇦🇱 Përkthe: Shqip</option>
             <option value="en">🇺🇸 Përkthe: Anglisht</option>
             <option value="it">🇮🇹 Përkthe: Italisht</option>
             <option value="de">🇩🇪 Përkthe: Gjermanisht</option>
-            <option value="fr">🇫🇷 Përkthe: Frëngjisht</option>
         </select>
     </div>
     
@@ -252,21 +247,15 @@ document.getElementById('searchInput').addEventListener('keypress', function(e) 
         <button id="voiceBtn" style="background:#333; border:none; color:white; border-radius:50%; width:42px; height:42px; cursor:pointer;">
             <i class="bi bi-mic"></i>
         </button>
-        <input type="text" id="userInput" placeholder="Shkruaj ose flit..." style="flex:1; padding:10px; border-radius:8px; border:1px solid #444; background:#0f0f1e; color:white; outline: none;">
+        <input type="text" id="userInput" placeholder="Shkruaj këtu..." style="flex:1; padding:10px; border-radius:8px; border:1px solid #444; background:#0f0f1e; color:white; outline: none;">
         <button id="sendBtn" style="padding:10px 15px; border-radius:8px; border:none; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); color:white; cursor:pointer;">
             <i class="bi bi-send"></i>
         </button>
     </div>
 </div>
 
-<style>
-    @keyframes blink { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
-    .paw { position: absolute; font-size: 40px; opacity: 0.1; pointer-events: none; }
-</style>
-
 <script>
 (function() {
-    // Referencat e elementeve
     const chatModal = document.getElementById('chatModal');
     const chatBtn = document.getElementById('chatBtn');
     const closeChat = document.getElementById('closeChat');
@@ -276,159 +265,64 @@ document.getElementById('searchInput').addEventListener('keypress', function(e) 
     const messagesDiv = document.getElementById('chatMessages');
     const voiceWave = document.getElementById('voiceWave');
 
-    // Hapja dhe mbyllja
+    // Hap/Mbyll Chat
     if(chatBtn) chatBtn.onclick = () => chatModal.style.display = 'flex';
     closeChat.onclick = () => chatModal.style.display = 'none';
 
     // 1. Analiza e Sentimentit
     function getSentiment(text) {
-        const positive = ['mirë', 'bukur', 'dua', 'love', 'good', 'happy'];
-        const negative = ['keq', 'sëmurë', 'problem', 'bad', 'nuk'];
         const lower = text.toLowerCase();
-        if (positive.some(w => lower.includes(w))) return 'Pozitiv 😊';
-        if (negative.some(w => lower.includes(w))) return 'Negativ 😟';
+        if (['mirë', 'bukur', 'dua', 'happy', 'love'].some(w => lower.includes(w))) return 'Pozitiv 😊';
+        if (['keq', 'sëmurë', 'problem', 'bad', 'nuk'].some(w => lower.includes(w))) return 'Negativ 😟';
         return 'Neutral 😐';
     }
 
-  async function processMessage(text) {
-    if (!text.trim()) return;
-
-    // Marrim gjuhët nga select-et e tua
-    const inLang = document.getElementById('inputLang').value.split('-')[0];
-    const outLang = document.getElementById('outputLang').value;
-    
-    // Shto mesazhin e përdoruesit në ekran
-    addMessageUI(text, 'user', getSentiment(text));
-
-async function processMessage(text) {
-    if (!text.trim()) return;
-
-    const inLang = document.getElementById('inputLang').value.split('-')[0];
-    const outLang = document.getElementById('outputLang').value;
-    
-    // 1. Shfaq mesazhin e përdoruesit
-    addMessageUI(text, 'user', getSentiment(text));
-
-    // 2. LOGJIKA E PRODUKTEVE (Kushtet)
-    let sqText = text.toLowerCase(); 
-    let response = "";
-
-    // Kontrolli për fjalët kyçe
-    if (sqText.includes('qen')) {
-        response = "Kemi ushqim dhe lodra fantastike për qentë!";
-    } else if (sqText.includes('mac')) {
-        response = "Për macet kemi rërë aromatike dhe ushqim premium Gourmet.";
-    } else if (sqText.includes('produkt') || sqText.includes('shiko')) {
-        response = "Produktet tona përfshijnë ushqime, aksesorë dhe lodra për kafshë.";
-    } else if (sqText.includes('lokacion') || sqText.includes('ku jeni')) {
-        response = "Na gjeni në Tiranë, ose mund të porosisni online në faqen tonë!";
-    } else if (sqText.includes('cmim') || sqText.includes('kushton')) {
-        response = "Çmimet tona fillojnë nga 5€ për aksesorët e thjeshtë.";
-    } else {
-        // Nëse nuk gjen fjalë kyçe, kthe një përgjigje të përgjithshme
-        response = "Si mund t'ju ndihmoj tjetër me kafshët tuaja në Paw Paradise?";
-    }
-
-    try {
-        // 3. PËRKTHIMI FINAL
-        // E kthejmë përgjigjen tonë në gjuhën që ka zgjedhur përdoruesi te "Përkthe"
-        const translateUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=sq&tl=${outLang}&dt=t&q=${encodeURI(response)}`;
-        const res = await fetch(translateUrl);
-        const data = await res.json();
-        const translatedResponse = data[0][0][0];
-
-        // 4. SHFAQJA NË EKRAN
-        setTimeout(() => {
-            // Shtojmë [KODI I GJUHËS] para mesazhit siç e ke në foto
-            const prefix = `[${outLang.toUpperCase()}]: `;
-            addMessageUI(prefix + translatedResponse, 'bot');
-            
-            // Opsionale: Zëri
-            if (typeof speak === "function") speak(translatedResponse, outLang);
-        }, 500);
-
-    } catch (err) {
-        console.error("Gabim gjatë përkthimit:", err);
-        addMessageUI("AI: Ndodhi një gabim, provo përsëri.", 'bot');
-    }
-
-    document.getElementById('userInput').value = '';
-}
-    try {
-        // 1. Kthejmë tekstin e klientit në Shqip që ta kuptojë sistemi
-        const detectUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${inLang}&tl=sq&dt=t&q=${encodeURI(text)}`;
-        const resDetect = await fetch(detectUrl);
-        const dataDetect = await resDetect.json();
-        const sqText = dataDetect[0][0][0].toLowerCase();
-
-        // 2. Gjejmë përgjigjen bazuar në produktet
-        let response = "Mirë se vini në Paw Paradise! Si mund t'ju ndihmojmë për kafshën tuaj?";
-        
-        if(sqText.includes('qen')) response = products.qen;
-        else if(sqText.includes('mac')) response = products.mace;
-        else if(sqText.includes('ushqim')) response = products.ushqim;
-        else if(sqText.includes('aksesor') || sqText.includes('lodr')) response = products.aksesore;
-        else if(sqText.includes('sa kushton') || sqText.includes('cmim')) response = products.cmim;
-
-        // 3. Përkthejmë përgjigjen në gjuhën që kërkon klienti (outLang)
-        const aiTransUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=sq&tl=${outLang}&dt=t&q=${encodeURI(response)}`;
-        const resAi = await fetch(aiTransUrl);
-        const dataAi = await resAi.json();
-        const finalAiText = dataAi[0][0][0];
-
-        // 4. Shfaqim përgjigjen në ekran
-        setTimeout(() => {
-            addMessageUI("PetBot: " + finalAiText, 'bot');
-            speak(finalAiText, outLang); // Përdor funksionin speak që keni
-        }, 600);
-
-    } catch (err) {
-        console.error("Gabim:", err);
-    }
-    userInput.value = '';
-}
-    // 3. Logjika e Chat-it
+    // 2. Logjika Kryesore
     async function handleChat(text) {
         if (!text.trim()) return;
-        const inLang = document.getElementById('inputLang').value.split('-')[0];
+
         const outLang = document.getElementById('outputLang').value;
-        
         addMessageUI(text, 'user', getSentiment(text));
 
+        // Përgjigjet e personalizuara për Paw Paradise
+        let sqResponse = "";
+        let lowerText = text.toLowerCase();
+
+        if (lowerText.includes('qen')) {
+            sqResponse = "Në Paw Paradise kemi ushqim premium dhe lodra interaktive për qentë!";
+        } else if (lowerText.includes('mac')) {
+            sqResponse = "Për macet kemi rërë aromatike dhe ushqime speciale Gourmet.";
+        } else if (lowerText.includes('produkt') || lowerText.includes('shiko')) {
+            sqResponse = "Produktet tona përfshijnë ushqime, aksesorë dhe lodra për çdo kafshë.";
+        } else if (lowerText.includes('lokacion') || lowerText.includes('ku jeni')) {
+            sqResponse = "Na gjeni në Tiranë, por ofrojmë dërgesa në të gjithë Shqipërinë!";
+        } else if (lowerText.includes('cmim') || lowerText.includes('kushton')) {
+            sqResponse = "Çmimet tona janë shumë ekonomike, duke filluar nga vetëm 5€.";
+        } else {
+            sqResponse = "Interesante! Si mund t'ju ndihmoj tjetër për kafshët tuaja?";
+        }
+
         try {
-            // Përkthejmë në Shqip për të kuptuar keyword-et
-            const transUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${inLang}&tl=sq&dt=t&q=${encodeURI(text)}`;
+            // Përkthejmë përgjigjen shqip në gjuhën e zgjedhur
+            const transUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=sq&tl=${outLang}&dt=t&q=${encodeURI(sqResponse)}`;
             const res = await fetch(transUrl);
             const data = await res.json();
-            const sqText = data[0][0][0].toLowerCase();
-
-            // Zgjedhim përgjigjen
-            let response = "Interesante! Na tregoni më shumë se çfarë po kërkoni për kafshën tuaj.";
-            if(sqText.includes('qen')) response = products.qen;
-            else if(sqText.includes('mac')) response = products.mace;
-            else if(sqText.includes('ushqim')) response = products.ushqim;
-            else if(sqText.includes('aksesor') || sqText.includes('lodr')) response = products.aksesore;
-            else if(sqText.includes('sa kushton') || sqText.includes('cmim')) response = products.cmim;
-
-            // Përkthejmë përgjigjen në gjuhën e daljes
-            const aiTransUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=sq&tl=${outLang}&dt=t&q=${encodeURI(response)}`;
-            const resAi = await fetch(aiTransUrl);
-            const dataAi = await resAi.json();
-            const finalResponse = dataAi[0][0][0];
+            const translatedResponse = data[0][0][0];
 
             setTimeout(() => {
-                addMessageUI("PetBot: " + finalResponse, 'bot');
-                speak(finalResponse, outLang);
+                addMessageUI(`[${outLang.toUpperCase()}]: ${translatedResponse}`, 'bot');
+                speak(translatedResponse, outLang);
             }, 600);
-        } catch (e) { console.error(e); }
+        } catch (e) {
+            console.error(e);
+        }
         userInput.value = '';
     }
 
-    // Voice & UI Functions
     function addMessageUI(text, sender, sentiment = '') {
         const side = sender === 'user' ? 'flex-end' : 'flex-start';
         const bg = sender === 'user' ? 'rgba(255,255,255,0.1)' : 'linear-gradient(135deg, #667eea, #764ba2)';
-        messagesDiv.innerHTML += `<div style="align-self:${side}; max-width:85%; padding:10px; border-radius:12px; background:${bg}; color:white; margin-bottom:5px; font-size:14px;">${text}${sentiment ? '<br><small style="opacity:0.6; font-size:10px;">'+sentiment+'</small>' : ''}</div>`;
+        messagesDiv.innerHTML += `<div style="align-self:${side}; max-width:85%; padding:10px; border-radius:12px; background:${bg}; color:white; margin-bottom:5px; font-size:14px; border: 1px solid rgba(255,255,255,0.1);">${text}${sentiment ? '<br><small style="opacity:0.6; font-size:10px;">'+sentiment+'</small>' : ''}</div>`;
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
 
@@ -439,18 +333,24 @@ async function processMessage(text) {
         window.speechSynthesis.speak(ut);
     }
 
-    // Event Listeners
+    // Eventet
     sendBtn.onclick = () => handleChat(userInput.value);
     userInput.onkeypress = (e) => { if(e.key === 'Enter') handleChat(userInput.value); };
 
+    // Voice Recognition
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (SpeechRecognition) {
         const rec = new SpeechRecognition();
-        voiceBtn.onclick = () => { rec.lang = document.getElementById('inputLang').value; rec.start(); voiceWave.style.display = 'block'; };
-        rec.onresult = (e) => { voiceWave.style.display = 'none'; handleChat(e.results[0][0].transcript); };
-        rec.onend = () => voiceWave.style.display = 'none';
+        voiceBtn.onclick = () => { 
+            rec.lang = document.getElementById('inputLang').value;
+            rec.start(); 
+            voiceWave.style.display = 'block'; 
+        };
+        rec.onresult = (e) => { handleChat(e.results[0][0].transcript); };
+        rec.onend = () => { voiceWave.style.display = 'none'; };
     }
 })();
+</script>
 
 // Animacioni i putrave (Pjesa estetike)
 document.addEventListener('DOMContentLoaded', function() {
