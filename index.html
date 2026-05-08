@@ -277,68 +277,47 @@ document.getElementById('searchInput').addEventListener('keypress', function(e) 
         return 'Neutral 😐';
     }
 
-   async function handleChat(text) {
-    if (!text.trim()) return;
+    // 2. Logjika Kryesore e Chat-it
+    async function handleChat(text) {
+        if (!text.trim()) return;
 
-    // 1. Marrim gjuhën e daljes (p.sh. English)
-    const outLang = document.getElementById('outputLang').value;
-    
-    // 2. Shfaqim mesazhin e përdoruesit në ekran
-    addMessageUI(text, 'user', getSentiment(text));
+        const outLang = document.getElementById('outputLang').value;
+        addMessageUI(text, 'user', getSentiment(text));
 
-    // 3. KONTROLLI I DIREKT (Pa përkthim paraprak)
-    let lowerText = text.toLowerCase();
-    let responseText = "";
+        let lowerText = text.toLowerCase();
+        let responseText = "";
 
-    // Këtu vendosen përgjigjet e tua fiks siç i do
-    if (lowerText.includes('qen')) {
-        responseText = "Në Paw Paradise kemi ushqim premium dhe lodra interaktive për qentë!";
-    } else if (lowerText.includes('mac')) {
-        responseText = "Për macet kemi rërë aromatike dhe ushqime speciale Gourmet.";
-    } else if (lowerText.includes('produkt') || lowerText.includes('shiko')) {
-        responseText = "Produktet tona përfshijnë ushqime, aksesorë dhe lodra për çdo kafshë.";
-    } else if (lowerText.includes('lokacion') || lowerText.includes('ku jeni') || lowerText.includes('ndodheni')) {
-        responseText = "Na gjeni në Tiranë, por ofrojmë dërgesa në të gjithë Shqipërinë!";
-    } else if (lowerText.includes('cmim') || lowerText.includes('kushton')) {
-        responseText = "Çmimet tona janë shumë ekonomike, duke filluar nga vetëm 5€.";
-    } else {
-        // Kjo është përgjigja rezervë nëse nuk gjen asnjë fjalë kyçe
-        responseText = "Mirë se vini në Paw Paradise! Si mund t'ju ndihmoj tjetër?";
-    }
-
-    // 4. PËRKTHIMI DHE SHFAQJA
-    try {
-        // Përkthejmë përgjigjen tonë Shqip në gjuhën që ka zgjedhur klienti
-        const transUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=sq&tl=${outLang}&dt=t&q=${encodeURI(responseText)}`;
-        const res = await fetch(transUrl);
-        const data = await res.json();
-        const finalResponse = data[0][0][0];
-
-        setTimeout(() => {
-            addMessageUI(`[${outLang.toUpperCase()}]: ${finalResponse}`, 'bot');
-            speak(finalResponse, outLang);
-        }, 600);
-    } catch (e) {
-        console.error("Gabim:", e);
-    }
-
-    userInput.value = '';
-}
+        // Përgjigjet e personalizuara për Paw Paradise (Kontrolli bëhet në Shqip)
+        if (lowerText.includes('qen')) {
+            responseText = "Në Paw Paradise kemi ushqim premium dhe lodra interaktive për qentë!";
+        } else if (lowerText.includes('mac')) {
+            responseText = "Për macet kemi rërë aromatike dhe ushqime speciale Gourmet.";
+        } else if (lowerText.includes('produkt') || lowerText.includes('shiko')) {
+            responseText = "Produktet tona përfshijnë ushqime, aksesorë dhe lodra për çdo kafshë.";
+        } else if (lowerText.includes('lokacion') || lowerText.includes('ku jeni') || lowerText.includes('ndodheni')) {
+            responseText = "Na gjeni në Tiranë, por ofrojmë dërgesa në të gjithë Shqipërinë!";
+        } else if (lowerText.includes('cmim') || lowerText.includes('kushton')) {
+            responseText = "Çmimet tona janë shumë ekonomike, duke filluar nga vetëm 5€.";
+        } else {
+            responseText = "Mirë se vini në Paw Paradise! Si mund t'ju ndihmoj tjetër?";
+        }
 
         try {
-            // Përkthejmë përgjigjen shqip në gjuhën e zgjedhur
-            const transUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=sq&tl=${outLang}&dt=t&q=${encodeURI(sqResponse)}`;
+            // Përkthejmë përgjigjen tonë nga Shqipja në gjuhën që ka zgjedhur klienti
+            const transUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=sq&tl=${outLang}&dt=t&q=${encodeURI(responseText)}`;
             const res = await fetch(transUrl);
             const data = await res.json();
-            const translatedResponse = data[0][0][0];
+            const finalResponse = data[0][0][0];
 
             setTimeout(() => {
-                addMessageUI(`[${outLang.toUpperCase()}]: ${translatedResponse}`, 'bot');
-                speak(translatedResponse, outLang);
+                addMessageUI(`[${outLang.toUpperCase()}]: ${finalResponse}`, 'bot');
+                speak(finalResponse, outLang);
             }, 600);
         } catch (e) {
-            console.error(e);
+            console.error("Gabim në përkthim:", e);
+            addMessageUI(responseText, 'bot'); 
         }
+
         userInput.value = '';
     }
 
@@ -356,7 +335,7 @@ document.getElementById('searchInput').addEventListener('keypress', function(e) 
         window.speechSynthesis.speak(ut);
     }
 
-    // Eventet
+    // Eventet e butonave
     sendBtn.onclick = () => handleChat(userInput.value);
     userInput.onkeypress = (e) => { if(e.key === 'Enter') handleChat(userInput.value); };
 
@@ -374,24 +353,6 @@ document.getElementById('searchInput').addEventListener('keypress', function(e) 
     }
 })();
 </script>
-
-// Animacioni i putrave (Pjesa estetike)
-document.addEventListener('DOMContentLoaded', function() {
-    const hero = document.querySelector('.hero-section');
-    if (hero) {
-        for (let i = 0; i < 8; i++) {
-            const p = document.createElement('div');
-            p.className = 'paw';
-            p.textContent = '🐾';
-            p.style.left = Math.random() * 90 + '%';
-            p.style.top = Math.random() * 90 + '%';
-            hero.appendChild(p);
-        }
-    }
-});
-</script>
-</style>
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const hero = document.querySelector('.hero-section');
