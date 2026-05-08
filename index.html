@@ -212,20 +212,42 @@ document.getElementById('searchInput').addEventListener('keypress', function(e) 
         </script>
 
 <!-- CHATBOT MODAL -->
-<div id="chatModal" style="display:none; position:fixed; bottom:20px; right:20px; width:380px; height:500px; background:#1a1a2e; border-radius:15px; box-shadow:0 5px 40px rgba(0,0,0,0.5); z-index:9999; flex-direction:column;">
+<div id="chatModal" style="display:none; position:fixed; bottom:20px; right:20px; width:380px; height:550px; background:#1a1a2e; border-radius:15px; box-shadow:0 5px 40px rgba(0,0,0,0.5); z-index:9999; flex-direction:column; border: 1px solid rgba(255,255,255,0.1);">
     <div style="padding:15px; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius:15px 15px 0 0; display:flex; justify-content:space-between; align-items:center;">
-        <h5 style="color:white; margin:0;"> <i class="bi bi-robot"></i> PetBot Assistant</h5>
+        <h5 style="color:white; margin:0;"> <i class="bi bi-robot"></i> PetBot AI Voice</h5>
         <button id="closeChat" style="background:none; border:none; color:white; font-size:24px; cursor:pointer; line-height:1;">×</button>
     </div>
+
+    <div style="padding:8px; display:flex; gap:5px; background: rgba(0,0,0,0.3); border-bottom: 1px solid #333;">
+        <select id="inputLang" class="form-select form-select-sm bg-dark text-white border-secondary" style="font-size: 12px;">
+            <option value="sq-AL">Nga: Shqip</option>
+            <option value="en-US">Nga: Anglisht</option>
+            <option value="it-IT">Nga: Italisht</option>
+            <option value="de-DE">Nga: Gjermanisht</option>
+        </select>
+        <select id="outputLang" class="form-select form-select-sm bg-dark text-white border-secondary" style="font-size: 12px;">
+            <option value="en">Përkthe: Anglisht</option>
+            <option value="sq">Përkthe: Shqip</option>
+            <option value="it">Përkthe: Italisht</option>
+            <option value="fr">Përkthe: Frëngjisht</option>
+        </select>
+    </div>
     
-    <div id="chatMessages" style="flex:1; padding:15px; overflow-y:auto; background:#0f0f1e;">
-        <div style="background:#667eea; color:white; padding:10px; border-radius:10px; margin-bottom:10px; max-width:80%;">
-            Hi! I'm PetBot 🐾 Ask me about food, toys, health care, or anything for your pet!
+    <div id="chatMessages" style="flex:1; padding:15px; overflow-y:auto; background:#0f0f1e; display: flex; flex-direction: column; gap: 10px;">
+        <div style="background:#667eea; color:white; padding:10px; border-radius:10px; align-self: flex-start; max-width:85%;">
+            Hi! I'm your AI Voice Assistant 🐾 I can translate and talk. Try clicking the microphone!
         </div>
+    </div>
+
+    <div id="voiceWave" style="display:none; text-align:center; padding: 5px; background: #0f0f1e;">
+        <span style="color: #764ba2; font-size: 12px;"><i class="bi bi-mic-fill"></i> Listening...</span>
     </div>
     
     <div style="padding:15px; border-top:1px solid #333; display:flex; gap:10px; background:#1a1a2e; border-radius:0 0 15px 15px;">
-        <input type="text" id="userInput" placeholder="Type your question..." style="flex:1; padding:10px; border-radius:8px; border:1px solid #444; background:#0f0f1e; color:white;">
+        <button id="voiceBtn" style="background:#333; border:none; color:white; border-radius:50%; width:40px; height:40px; cursor:pointer;">
+            <i class="bi bi-mic"></i>
+        </button>
+        <input type="text" id="userInput" placeholder="Type or speak..." style="flex:1; padding:10px; border-radius:8px; border:1px solid #444; background:#0f0f1e; color:white;">
         <button id="sendBtn" style="padding:10px 15px; border-radius:8px; border:none; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); color:white; cursor:pointer;">
             <i class="bi bi-send"></i>
         </button>
@@ -233,188 +255,88 @@ document.getElementById('searchInput').addEventListener('keypress', function(e) 
 </div>
 
 <script>
-// Open/close chat
-document.getElementById('chatBtn').onclick = function() {
-    document.getElementById('chatModal').style.display = 'flex';
-};
+// --- KONFIGURIMI I LOGJIKËS ---
+const chatModal = document.getElementById('chatModal');
+const chatBtn = document.getElementById('chatBtn');
+const closeChat = document.getElementById('closeChat');
+const voiceBtn = document.getElementById('voiceBtn');
+const inputLangSelect = document.getElementById('inputLang');
+const outputLangSelect = document.getElementById('outputLang');
+const messagesDiv = document.getElementById('chatMessages');
 
-document.getElementById('closeChat').onclick = function() {
-    document.getElementById('chatModal').style.display = 'none';
-};
+// Open/Close
+chatBtn.onclick = () => chatModal.style.display = 'flex';
+closeChat.onclick = () => chatModal.style.display = 'none';
 
-// Smart keyword-based responses - NO INTERNET NEEDED
-function getBotResponse(input) {
-    const msg = input.toLowerCase();
-    
-    if (msg.includes('dog') && msg.includes('food')) {
-        return "For dogs, I recommend Premium Dry Food for daily nutrition 🐕 We also have wet food for picky eaters. Check our Products page for options!";
-    }
-    else if (msg.includes('cat') && msg.includes('food')) {
-        return "Cats love our Tuna & Salmon formula! 🐱 We have dry kibble and wet food. Grain-free options available too!";
-    }
-    else if (msg.includes('toy')) {
-        return "We have lots of toys! 🎾 Chew toys for dogs, feather wands for cats, and puzzle toys for mental stimulation. What's your pet?";
-    }
-    else if (msg.includes('sick') || msg.includes('vet') || msg.includes('health')) {
-        return "If your pet seems sick, please contact a vet immediately 🩺 For general health, we recommend quality food and regular checkups. I can suggest supplements too!";
-    }
-    else if (msg.includes('price') || msg.includes('cost') || msg.includes('buy')) {
-        return "For exact prices and stock, please visit our Products page 💰 You can also filter by Dog, Cat, Bird, or Fish!";
-    }
-    else if (msg.includes('bird')) {
-        return "For birds we have seed mixes, millet sprays, and fun toys! 🦜 What kind of bird do you have?";
-    }
-    else if (msg.includes('fish')) {
-        return "For fish we have flakes, pellets, and tank decorations 🐠 Fresh water or salt water?";
-    }
-    else if (msg.includes('hello') || msg.includes('hi') || msg.includes('hey')) {
-        return "Hello! 👋 How can I help you and your pet today?";
-    }
-    else if (msg.includes('thank')) {
-        return "You're welcome! 😊 Anything else I can help with?";
-    }
-    else {
-        return "I can help with food, toys, health tips, and product info! 🐾 Try asking: 'food for my dog' or 'cat toys'. For specific products, check our Products page!";
-    }
+// 1. LIDHJA ME AI PËR PËRKTHIM (API E GATSHME)
+async function translateText(text, sourceLang, targetLang) {
+    const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sourceLang}&tl=${targetLang}&dt=t&q=${encodeURI(text)}`;
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        return data[0][0][0];
+    } catch (e) { return text; }
 }
 
-function sendMessage() {
-    const input = document.getElementById('userInput');
-    const messagesDiv = document.getElementById('chatMessages');
-    const userText = input.value.trim();
+// 2. TEXT TO SPEECH (ZËRI I AI)
+function speak(text, lang) {
+    window.speechSynthesis.cancel();
+    const msg = new SpeechSynthesisUtterance(text);
+    msg.lang = lang;
+    window.speechSynthesis.speak(msg);
+}
+
+// 3. SPEECH TO TEXT (NJOHJA E ZËRIT)
+const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+recognition.continuous = false;
+
+voiceBtn.onclick = () => {
+    recognition.lang = inputLangSelect.value;
+    recognition.start();
+    document.getElementById('voiceWave').style.display = 'block';
+};
+
+recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+    document.getElementById('userInput').value = transcript;
+    document.getElementById('voiceWave').style.display = 'none';
+    handleResponse(transcript);
+};
+
+// 4. PROCESIMI I MESAZHEVE
+async function handleResponse(text) {
+    if (!text.trim()) return;
+
+    // Shfaq mesazhin e përdoruesit
+    messagesDiv.innerHTML += `<div style="background:#444; color:white; padding:10px; border-radius:10px; align-self: flex-end; max-width:85%;">${text}</div>`;
     
-    if (userText === '') return;
+    const source = inputLangSelect.value.split('-')[0];
+    const target = outputLangSelect.value;
+
+    // AI Translation
+    const translated = await translateText(text, source, target);
     
-    // Show user message
-    messagesDiv.innerHTML += `
-        <div style="background:#444; color:white; padding:10px; border-radius:10px; margin-bottom:10px; max-width:80%; margin-left:auto; text-align:right;">
-            ${userText}
-        </div>
-    `;
-    input.value = '';
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    
-    // Show "typing..." then reply
+    // Logjika e Paw Paradise
+    let responseText = `Translated: "${translated}"`;
+    if(text.toLowerCase().includes('dog') || text.toLowerCase().includes('qen')) {
+        responseText += " 🐕 For dogs, we recommend our premium grain-free food!";
+    } else if (text.toLowerCase().includes('cat') || text.toLowerCase().includes('mace')) {
+        responseText += " 🐱 Cats love our new laser toys and tuna treats!";
+    }
+
+    // Shfaq përgjigjen e Bot-it
     setTimeout(() => {
-        const botReply = getBotResponse(userText);
-        messagesDiv.innerHTML += `
-            <div style="background:#667eea; color:white; padding:10px; border-radius:10px; margin-bottom:10px; max-width:80%;">
-                ${botReply}
-            </div>
-        `;
+        messagesDiv.innerHTML += `<div style="background:#667eea; color:white; padding:10px; border-radius:10px; align-self: flex-start; max-width:85%;">${responseText}</div>`;
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    }, 600);
+        speak(responseText, target);
+    }, 500);
+
+    document.getElementById('userInput').value = '';
 }
 
-document.getElementById('sendBtn').onclick = sendMessage;
-document.getElementById('userInput').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') sendMessage();
-});
+document.getElementById('sendBtn').onclick = () => handleResponse(document.getElementById('userInput').value);
+document.getElementById('userInput').onkeypress = (e) => { if(e.key === 'Enter') handleResponse(e.target.value); };
 </script>
-</script>
-<style>
-.hero-section {
-    position: relative;
-    overflow: hidden;
-}
-
-.paw {
-    position: absolute;
-    font-size: 40px;
-    opacity: 0.15;
-    color: #667eea;
-    pointer-events: none;
-    z-index: 0;
-    animation: floatPaw 25s infinite ease-in-out;
-    transform: rotate(var(--rotation));
-}
-
-.paw:nth-child(1) {
-    left: 5%; top: 15%;
-    --rotation: -15deg;
-    animation-delay: 0s;
-    font-size: 50px;
-}
-
-.paw:nth-child(2) {
-    right: 10%; top: 25%;
-    --rotation: 25deg;
-    animation-delay: 3s;
-    font-size: 35px;
-}
-
-.paw:nth-child(3) {
-    left: 15%; bottom: 20%;
-    --rotation: 10deg;
-    animation-delay: 6s;
-    font-size: 45px;
-}
-
-.paw:nth-child(4) {
-    right: 20%; bottom: 30%;
-    --rotation: -20deg;
-    animation-delay: 2s;
-    font-size: 40px;
-}
-
-.paw:nth-child(5) {
-    left: 50%; top: 10%;
-    --rotation: 15deg;
-    animation-delay: 8s;
-    font-size: 30px;
-}
-
-.paw:nth-child(6) {
-    right: 40%; bottom: 15%;
-    --rotation: -10deg;
-    animation-delay: 4s;
-    font-size: 55px;
-}
-
-.paw:nth-child(7) {
-    left: 30%; top: 50%;
-    --rotation: 30deg;
-    animation-delay: 1s;
-    font-size: 35px;
-}
-
-@keyframes floatPaw {
-    0%, 100% { 
-        transform: translateY(0px) translateX(0px) rotate(var(--rotation));
-        opacity: 0.1;
-    }
-    25% { 
-        transform: translateY(-20px) translateX(15px) rotate(calc(var(--rotation) + 5deg));
-        opacity: 0.2;
-    }
-    50% { 
-        transform: translateY(-5px) translateX(-10px) rotate(calc(var(--rotation) - 3deg));
-        opacity: 0.15;
-    }
-    75% { 
-        transform: translateY(-30px) translateX(5px) rotate(calc(var(--rotation) + 8deg));
-        opacity: 0.25;
-    }
-}
-</style>
-<style>
-.hero-section {
-    position: relative;
-    overflow: hidden;
-}
-
-.paw {
-    position: absolute;
-    font-size: 80px;
-    opacity: 0.2;
-    color: #667eea;
-    pointer-events: none;
-    z-index: 0;
-    animation: floatPaw 25s infinite ease-in-out;
-    transform: rotate(var(--rotation));
-    filter: blur(0.5px);
-}
-
 /* Dark mode - putra më të ndritshme */
 body.dark-mode .paw {
     color: #8b9cff;
